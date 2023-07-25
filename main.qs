@@ -7,7 +7,7 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Convert;
     open Microsoft.Quantum.Math;
 
-    //A little update to test requests
+    //A little update to test requests. Again.
 
     //TODO:
     //Encode Vectors/Arrays as Amplitudes (For A, b, and similar (A~. and B~))
