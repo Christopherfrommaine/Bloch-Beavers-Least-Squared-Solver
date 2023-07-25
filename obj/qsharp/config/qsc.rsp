@@ -2,6 +2,7 @@
     "C:\Users\chris\Git-Repos\Bloch Beavers Least Squared Solver\main"
 --build-exe
 --input
+    "C:\Users\chris\Git-Repos\Bloch Beavers Least Squared Solver\.testing\testing.qs"
     "C:\Users\chris\Git-Repos\Bloch Beavers Least Squared Solver\main.qs"
 --output
     "C:/Users/chris/Git-Repos/Bloch Beavers Least Squared Solver/obj/qsharp/"

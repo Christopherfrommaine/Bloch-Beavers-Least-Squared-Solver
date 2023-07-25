@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CrPvsh5769dw8VBAHddpRntHvAviZm9Jdt3qt/sN3AwZqPsajkT73k81CHl+rHqfbvKjGTG0o20y5KztGay2WQ==",
+  "dgSpecHash": "UheMZikTsc/FrOIA5XvEBEMGss9+chcMR14EcbCI7ZZyMRrscLBhLxZyFPxH/7EGaWr8TZ3CWRu69hH/oZt+CA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj",
+  "projectFilePath": "c:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chris\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\chris\\.nuget\\packages\\azure.identity\\1.5.0\\azure.identity.1.5.0.nupkg.sha512",

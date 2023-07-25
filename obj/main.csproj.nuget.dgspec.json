@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj": {}
+    "c:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj": {}
   },
   "projects": {
-    "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj": {
+    "c:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj",
+        "projectUniqueName": "c:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj",
         "projectName": "main",
-        "projectPath": "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj",
+        "projectPath": "c:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.csproj",
         "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\obj\\",
+        "outputPath": "c:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chris\\AppData\\Roaming\\NuGet\\NuGet.Config",
