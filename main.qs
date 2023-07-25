@@ -20,7 +20,7 @@ namespace Least.Squares.Solver {
 
     //Specifics of every operation we need to implement:
     
-    //Encode Vectors/Arrays as Amplitudes
+    //Encode Vectors/Arrays as Amplitudes (Aditya)
         //Inputs: datapoints (a classical set of (x, y) points), mu (a binary qubit register representing the mu value), width (a classical value to tell you the degree of the polynomial)
         //Outputs: a qubit register with A~ encoded into the amplitudes, a qubit register with b~ encoded into the amplitudes
         //Example:
@@ -53,12 +53,42 @@ namespace Least.Squares.Solver {
         //Return a tuple of (b~, A~)
     
 
-    //Make the HHL Operation
+    //Make the HHL Operation (Tony)
         //I'm still a bit unsure of the specific details
 
     
+    //Make the QPE_G Operation (Christopher)
+        //Inputs: Qubit register, number of control qubits to use (denoted l in the paper)
+        //Output: 
+        //Finds the phase of the first element of the register (finds θ given φ).
+        //NOTE: The built-in operation "unitary" is needed and extremely helpful here
+
+        //Find a matrix U such that U(|0>) = register (the register you are given)
+        //Fing G based on U (formula for G is in paper)
+        //Create some control qubits |+>
+        //Repeatedly apply powers of G for each control qubit (see paper)
+        //Apply the QFT  to the control qubits
+        //What you get out is most likely the binary representation of θ*2^(number of control qubits)
+        //Return the control qubits
+    
     //Make the QAE Operation
-        //Inputs: Qubit register, index
+        //Inputs: Qubit register, number of control qubits to use (denoted l in the paper)
+        //Output: The state |f(cos(theta))>
+
+        //Given a function f (from who knows where. Try to figure that out in the paper)
+        //Create U_f (probably with the unitary built in)
+        //Apply QPE_G, Apply U_f(control bits, target), Apply adjoint QPE_G
+        //Return target
+    
+
+    //Make the QMF algorithm
+        //See paper (pg 6).
+        //Given a mu,
+
+
+
+
+    
 
         
 
