@@ -145,12 +145,12 @@ namespace Least.Squares.Solver {
     }
     
 
-    operation U_f(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
+    operation U_f(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
         mutable eiAt = [[], size = 0];
         for row in A {
             mutable payload = [Complex(0.0, 0.0), size = 0];
             for i in row {
-                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * i))];
+                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, t * i))];
             }
             set eiAt += [payload];
         }
@@ -158,12 +158,12 @@ namespace Least.Squares.Solver {
     }
 
 
-    operation U_f_inverse(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
+    operation U_f_inverse(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
         mutable eiAt = [[], size = 0];
         for row in A {
             mutable payload = [Complex(0.0, 0.0), size = 0];
             for i in row {
-                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * -i))];
+                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, t * -i))];
             }
             set eiAt += [payload];
         }
@@ -171,7 +171,7 @@ namespace Least.Squares.Solver {
     }
 
 
-    operation QCR(b : Qubit[], c : Qubit[], U : (Qubit[] => Unit is Adj + Ctl)) : Unit is Adj {
+    operation QCR(b : Qubit[], c : Qubit[], U : (Qubit[] => Unit is Ctl)) : Unit {
         for controlQubit in c {
             Controlled U([controlQubit], b);
         }
@@ -194,8 +194,9 @@ namespace Least.Squares.Solver {
         
         displayMatrix(Aoriginal, "Original A");
         displayMatrix(A, "Hermitian A");
-
-
+        
+        use c = Qubit[10];
+        QCR(b, c, U_f(A, 1., _));
 
 
         ResetAll(b);
