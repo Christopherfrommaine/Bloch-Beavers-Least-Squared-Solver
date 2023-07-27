@@ -23,8 +23,29 @@ namespace Least.Squares.Solver {
         //Convert to U
 
         //V = (u0, u1) (The Eigenvectors)
+        //V_t = daggar of V = V
         //Adiag = V_t A V
-        //U
+        //Udiag = (e^i eigenvalue0 t   0                )
+        //        (0                   e^i eigenvalue1 t)
+        //U = V Udiag V_t
+        //U^2 = V (Udiag^2) V_t
+        //Etc for all powers
+
+    //Convert U to Weird Variables
+        //Find theta, phi, lambda, and gamma such that
+        //Equation 38 in walkthrough
+        //For U, U^2, U^-1, and (U^-1)^2 etc for all powers
+    
+    //Controlled Rotations
+        //Find theta for all eigenvalues (2 arcsin(1 / c)) look in walkthrough for equation for c
+        //Make Ry(theta, ) gate
+        //Controlled Ry(controlbits, (theta, ancilla))
+    
+
+    //Main
+        //Do all of the above functions in order
+        //Uncompute QPE
+    
     
 
     
