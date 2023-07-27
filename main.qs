@@ -67,9 +67,9 @@ namespace Least.Squares.Solver {
     }
 
 
-    function displayMatrix(inputMatrix : Double[][]) : Unit {
+    function displayMatrix(inputMatrix : Double[][], name : String) : Unit {
         let matrix = transpose(inputMatrix);
-        mutable o = "|";
+        mutable o = name + "\n|";
 
         mutable maxLength = 0;
         for column in matrix {
@@ -180,19 +180,16 @@ namespace Least.Squares.Solver {
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
         use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data))))];
-        //prepareStateB(data, b);    
+        prepareStateB(data, b);    
         DumpMachine();
         ResetAll(b);
 
 
         let Aoriginal = prepareOriginalMatrixA(data, widthA);
-        Message($"Aoriginal: {Aoriginal}");
         let A = convertAtoHermitian(Aoriginal);
-        Message($"Ahermitian: {A}");
-
         
-        displayMatrix(Aoriginal);
-        displayMatrix(A);
+        displayMatrix(Aoriginal, "Original A");
+        displayMatrix(A, "Hermitian A");
 
 
 
