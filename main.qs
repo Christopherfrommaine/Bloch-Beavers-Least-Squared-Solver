@@ -12,16 +12,16 @@ namespace Least.Squares.Solver {
 
     
 
-    operation prepareStateB (data : Int[][], qubits : Qubit[], entangledAmplitudeb : Qubit) : Unit {
+    operation prepareStateB (data : Double[][], qubits : Qubit[], entangledAmplitudeb : Qubit) : Unit {
         //This prepares the vector |b> as the amplitudes of the |1> state of an ancillary qubit
         //when entangled with the index qubit. ie: b[5] = |5>0.7|1>
         //This is the method used in the 25 page paper.
 
         mutable maxB = 0.;
-        for i in data {if IntAsDouble(i[1]) > maxB {set maxB = IntAsDouble(i[1]);}} //Find largest element of b
+        for i in data {if i[1] > maxB {set maxB = i[1];}} //Find largest element of b
 
         mutable b = [];
-        for i in data {set b += [IntAsDouble(i[1]) / maxB];} //Gets the b vecotor normalized w/ all entries < 1
+        for i in data {set b += [i[1] / maxB];} //Gets the b vecotor normalized w/ all entries < 1
 
         let n_b = Ceiling(Lg(IntAsDouble(Length(b)))); //Find qubit length of b
 
@@ -35,14 +35,80 @@ namespace Least.Squares.Solver {
     }
 
 
+    function displayMatrix(matrix : Double[][], name: String? = () ) : Unit {
+        mutable o = "|";
+        for column in matrix {
+            for element in column {
+                set o += DoubleAsString(element) + " ";
+            }
+            set o += "|\n|";
+        }
+        Message($"Matrix: {o[0 .. Length(o) - 3]}");
+    }
+
+
+    function transpose(matrix : Double[][]) : Double[][] {
+        mutable o = [[0.], size=0];
+        for i in 0 .. Length(matrix[0]) - 1 {
+            mutable temp = [0., size=0];
+            for j in 0 .. Length(matrix) - 1 {
+                set temp += [matrix[i][j]];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+
+
+    function prepareOriginalMatrixA (data : Double[][], width : Int) : Double[][] {
+        mutable A = [[0.], size=0];
+        for column in 0 .. width - 1 {
+            mutable temp = [0., size=0];
+            for row in data {
+                set temp += [row[0] ^ IntAsDouble(width - column - 1)];
+            }
+            set A += [temp];
+        }
+        return A;
+    }
+
+
+    function convertAtoHermitian (A : Double[][]) : Double[][] {
+        //Converts A to
+        //(0  A)
+        //(At 0)
+
+        let At = transpose(A); //Should technically be conjugate transpose, but it is real-valued
+        let (w, h) = (Length(A), Length(A[0]));
+        mutable o = [[0.], size=0];
+
+        for i in 0 .. w + h - 1 {
+            mutable temp = [0., size=0];
+            for j in 0 .. h + w - 1 {
+                if i > h and j <= h {
+                    set temp += [A[i - h][j]];
+                }
+                elif i <= h and j > h {
+                    set temp += [At[i][j - h]];
+                }
+                else {
+                    set temp += [0.];
+                }
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+
+
 
 
 
     @EntryPoint()
     operation MainOp() : Unit {
 
-        let polynomialDegree = 3;  //Should be a power of 2 minus 1
-        let data = [[0, 1], [2, 4], [3, 5], [4, 10], [4, 4], [7, 3], [7, 2], [5, 1]];
+        let widthA = 4;  //Should be a power of 2. It is one more than the polynomial degree.
+        let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
 
         use (bAmplitude, bIndex) = (Qubit(), Qubit[Ceiling(Lg(IntAsDouble(Length(data))))]);
@@ -52,7 +118,15 @@ namespace Least.Squares.Solver {
         ResetAll(bIndex + [bAmplitude]);
 
 
+        let Aoriginal = prepareOriginalMatrixA(data, widthA);
+        Message($"Aoriginal: {Aoriginal}");
+        let A = convertAtoHermitian(Aoriginal);
+        Message($"Ahermitian: {A}");
         
+
+
+
+
 
     }
 }
