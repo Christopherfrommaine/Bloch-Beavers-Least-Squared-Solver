@@ -52,38 +52,50 @@ namespace Least.Squares.Solver {
     
     
 
-    operation prepareStateB (data : Double[][], qubits : Qubit[], entangledAmplitudeb : Qubit) : Unit {
+    operation prepareStateB (data : Double[][], register : Qubit[]) : Unit {
         //This prepares the vector |b> as the amplitudes of the |1> state of an ancillary qubit
         //when entangled with the index qubit. ie: b[5] = |5>0.7|1>
         //This is the method used in the 25 page paper.
 
-        mutable maxB = 0.;
-        for i in data {if i[1] > maxB {set maxB = i[1];}} //Find largest element of b
+        mutable sumOfSquares = 0.;
+        for i in data {set sumOfSquares += i[1] ^ 2.;} //Find largest element of b
+        let normFactor = Sqrt(sumOfSquares);
 
         mutable b = [];
-        for i in data {set b += [i[1] / maxB];} //Gets the b vecotor normalized w/ all entries < 1
+        for i in data {set b += [i[1] / normFactor];} //Gets the b vecotor normalized w/ all entries < 1
 
         let n_b = Ceiling(Lg(IntAsDouble(Length(b)))); //Find qubit length of b
 
-        ApplyToEach(H, qubits);
+        ApplyToEach(H, register);
         for i in 0 .. 2 ^ n_b - 1 {
             let binaryrepresentation = IntAsBoolArray(i, n_b);
-            ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
-            Controlled Ry(qubits, (2. * ArcSin(b[i]), entangledAmplitudeb));
-            ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
+            // ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
+            // Controlled Ry(qubits, (2. * ArcSin(b[i]), entangledAmplitudeb));
+            // ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
         }
     }
 
 
-    function displayMatrix(matrix : Double[][]) : Unit {
+    function displayMatrix(inputMatrix : Double[][]) : Unit {
+        let matrix = transpose(inputMatrix);
         mutable o = "|";
+
+        mutable maxLength = 0;
         for column in matrix {
             for element in column {
-                set o += DoubleAsString(element) + " ";
+                if element > 1. and (Ceiling(Log10(element))) > maxLength {set maxLength = Ceiling(Log10(element));}
+            }
+        }
+        // Message($"MaxLength: {maxLength}");
+
+        for column in matrix {
+            for element in column {
+                set o += DoubleAsString(element);
+                for space in 0 .. maxLength - (element > 1. ? Ceiling(Log10(element)) | 1) {set o += " ";}
             }
             set o += "|\n|";
         }
-        Message($"Matrix: {o}");
+        Message($"Matrix: \n{o}");
     }
 
 
@@ -92,7 +104,7 @@ namespace Least.Squares.Solver {
         for i in 0 .. Length(matrix[0]) - 1 {
             mutable temp = [0., size=0];
             for j in 0 .. Length(matrix) - 1 {
-                set temp += [matrix[i][j]];
+                set temp += [matrix[j][i]];
             }
             set o += [temp];
         }
@@ -125,10 +137,10 @@ namespace Least.Squares.Solver {
         for i in 0 .. w + h - 1 {
             mutable temp = [0., size=0];
             for j in 0 .. h + w - 1 {
-                if i > h and j <= h {
+                if i >= h and j < h {
                     set temp += [A[i - h][j]];
                 }
-                elif i <= h and j > h {
+                elif i < h and j >= h {
                     set temp += [At[i][j - h]];
                 }
                 else {
@@ -146,8 +158,6 @@ namespace Least.Squares.Solver {
         ApplyUnitary(eiAt, LittleEndian(qubits));
     }
 
-
-
     @EntryPoint()
     operation MainOp() : Unit {
 
@@ -155,17 +165,21 @@ namespace Least.Squares.Solver {
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
 
-        use (bAmplitude, bIndex) = (Qubit(), Qubit[Ceiling(Lg(IntAsDouble(Length(data))))]);
-        prepareStateB(data, bIndex, bAmplitude);
+        use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data))))];
+        //prepareStateB(data, b);
         
         DumpMachine();
-        ResetAll(bIndex + [bAmplitude]);
+        ResetAll(b);
 
 
         let Aoriginal = prepareOriginalMatrixA(data, widthA);
         Message($"Aoriginal: {Aoriginal}");
         let A = convertAtoHermitian(Aoriginal);
         Message($"Ahermitian: {A}");
+
+        
+        displayMatrix(Aoriginal);
+        displayMatrix(A);
         
 
 
