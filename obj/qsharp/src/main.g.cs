@@ -225,7 +225,7 @@ namespace Least.Squares.Solver
             }
 
 #line 89 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            Message__.Apply(String.Format("Matrix: \n{0}", o));
+            Message__.Apply(o);
 #line hidden
             return QVoid.Instance;
         }

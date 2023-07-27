@@ -14,24 +14,14 @@ namespace Least.Squares.Solver {
 
 
 
-    //Prep (Almost Done)
+    //Prep (DONE)
         //Prep b
         //Prep A (Hermitian)
-    //Find Eigenvectors of A
+    
+    
     //Get U given A an t
-        //U = e^iAt
-        //Convert A to Adiag
-        //Find Udiag
-        //Convert to U
-
-        //V = (u0, u1) (The Eigenvectors)
-        //V_t = daggar of V = V
-        //Adiag = V_t A V
-        //Udiag = (e^i eigenvalue0 t   0                )
-        //        (0                   e^i eigenvalue1 t)
-        //U = V Udiag V_t
-        //U^2 = V (Udiag^2) V_t
-        //Etc for all powers
+        //U = e^iAt (DONE!)
+        //Find U_daggar
 
     //Convert U to Weird Variables
         //Find theta, phi, lambda, and gamma such that
@@ -77,7 +67,6 @@ namespace Least.Squares.Solver {
                 if element > 1. and (Ceiling(Log10(element))) > maxLength {set maxLength = Ceiling(Log10(element));}
             }
         }
-        // Message($"MaxLength: {maxLength}");
 
         for column in matrix {
             for element in column {
@@ -94,6 +83,17 @@ namespace Least.Squares.Solver {
         mutable o = [[0.], size=0];
         for i in 0 .. Length(matrix[0]) - 1 {
             mutable temp = [0., size=0];
+            for j in 0 .. Length(matrix) - 1 {
+                set temp += [matrix[j][i]];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+    function transposeC(matrix : Complex[][]) : Complex[][] {
+        mutable o = [[Complex(0., 0.)], size=0];
+        for i in 0 .. Length(matrix[0]) - 1 {
+            mutable temp = [Complex(0., 0.), size=0];
             for j in 0 .. Length(matrix) - 1 {
                 set temp += [matrix[j][i]];
             }
@@ -144,9 +144,6 @@ namespace Least.Squares.Solver {
     }
     
 
-    
-
-
     operation U_f(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
         mutable eiAt = [[], size = 0];
         for row in A {
@@ -182,7 +179,7 @@ namespace Least.Squares.Solver {
         use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data))))];
         prepareStateB(data, b);    
         DumpMachine();
-        ResetAll(b);
+        
 
 
         let Aoriginal = prepareOriginalMatrixA(data, widthA);
@@ -194,6 +191,6 @@ namespace Least.Squares.Solver {
 
 
 
-
+        ResetAll(b);
     }
 }
