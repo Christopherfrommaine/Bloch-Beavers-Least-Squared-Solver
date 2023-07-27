@@ -152,11 +152,32 @@ namespace Least.Squares.Solver {
         return o;
     }
 
-    operation U_f(A : Double[][], t : Int, qubits : Qubit[]) : Unit {
-        mutable eiAt = [[PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[0][0])), PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[0][1]))],
-                        [PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[1][0])), PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[1][1]))]];
+
+    operation U_f(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
+        mutable eiAt = [[], size = 0];
+        for row in A {
+            mutable payload = [Complex(0.0, 0.0), size = 0];
+            for i in row {
+                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * i))];
+            }
+            set eiAt += [payload];
+        }
         ApplyUnitary(eiAt, LittleEndian(qubits));
     }
+
+
+    operation U_f_dag(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
+        mutable eiAt = [[], size = 0];
+        for row in A {
+            mutable payload = [Complex(0.0, 0.0), size = 0];
+            for i in row {
+                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * -i))];
+            }
+            set eiAt += [payload];
+        }
+        ApplyUnitary(eiAt, LittleEndian(qubits));
+    }
+
 
     @EntryPoint()
     operation MainOp() : Unit {
@@ -164,10 +185,8 @@ namespace Least.Squares.Solver {
         let widthA = 4;  //Should be a power of 2. It is one more than the polynomial degree.
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
-
         use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data))))];
-        //prepareStateB(data, b);
-        
+        //prepareStateB(data, b);    
         DumpMachine();
         ResetAll(b);
 
@@ -180,7 +199,6 @@ namespace Least.Squares.Solver {
         
         displayMatrix(Aoriginal);
         displayMatrix(A);
-        
 
 
 
