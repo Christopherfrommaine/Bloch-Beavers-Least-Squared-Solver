@@ -10,6 +10,7 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Synthesis;
+    open Microsoft.Quantum.Preparation;
 
 
 
@@ -49,9 +50,6 @@ namespace Least.Squares.Solver {
     
     
 
-    
-    
-
     operation prepareStateB (data : Double[][], register : Qubit[]) : Unit {
         //This prepares the vector |b> as the amplitudes of the |1> state of an ancillary qubit
         //when entangled with the index qubit. ie: b[5] = |5>0.7|1>
@@ -63,16 +61,9 @@ namespace Least.Squares.Solver {
 
         mutable b = [];
         for i in data {set b += [i[1] / normFactor];} //Gets the b vecotor normalized w/ all entries < 1
+        Message($"{b}");
 
-        let n_b = Ceiling(Lg(IntAsDouble(Length(b)))); //Find qubit length of b
-
-        ApplyToEach(H, register);
-        for i in 0 .. 2 ^ n_b - 1 {
-            let binaryrepresentation = IntAsBoolArray(i, n_b);
-            // ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
-            // Controlled Ry(qubits, (2. * ArcSin(b[i]), entangledAmplitudeb));
-            // ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
-        }
+        PrepareArbitraryStateD(b, LittleEndian(register));
     }
 
 
@@ -151,6 +142,9 @@ namespace Least.Squares.Solver {
         }
         return o;
     }
+    
+
+    
 
 
     operation U_f(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {

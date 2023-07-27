@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Tony Chen\\Desktop\\bwsi\\Bloch-Beavers-Least-Squared-Solver\\main.csproj": {}
+    "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Tony Chen\\Desktop\\bwsi\\Bloch-Beavers-Least-Squared-Solver\\main.csproj": {
+    "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Tony Chen\\Desktop\\bwsi\\Bloch-Beavers-Least-Squared-Solver\\main.csproj",
+        "projectUniqueName": "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.csproj",
         "projectName": "main",
-        "projectPath": "c:\\Users\\Tony Chen\\Desktop\\bwsi\\Bloch-Beavers-Least-Squared-Solver\\main.csproj",
-        "packagesPath": "C:\\Users\\Tony Chen\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Tony Chen\\Desktop\\bwsi\\Bloch-Beavers-Least-Squared-Solver\\obj\\",
+        "projectPath": "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.csproj",
+        "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Tony Chen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\chris\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
