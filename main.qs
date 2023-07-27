@@ -157,7 +157,7 @@ namespace Least.Squares.Solver {
     }
 
 
-    operation U_f_dag(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
+    operation U_f_inverse(A : Double[][], t : Int, qubits : Qubit[]) : Unit is Ctl {
         mutable eiAt = [[], size = 0];
         for row in A {
             mutable payload = [Complex(0.0, 0.0), size = 0];
