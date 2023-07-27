@@ -24,6 +24,8 @@ namespace Least.Squares.Solver {
 
         //V = (u0, u1) (The Eigenvectors)
         //Adiag = V_t A V
+        
+    
 
     
     
