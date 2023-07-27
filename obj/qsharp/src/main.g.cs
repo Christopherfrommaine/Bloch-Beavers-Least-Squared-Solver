@@ -14,28 +14,56 @@ using Microsoft.Quantum.Intrinsic;
 using Microsoft.Quantum.Intrinsic.Interfaces;
 using Microsoft.Quantum.Simulation.Core;
 
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[{\"TypeId\":{\"Case\":\"Value\",\"Fields\":[{\"Namespace\":\"Microsoft.Quantum.Core\",\"Name\":\"EntryPoint\",\"Range\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]}}]},\"TypeIdRange\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]},\"Argument\":{\"Item1\":{\"Case\":\"UnitValue\"},\"Item2\":[],\"Item3\":{\"Case\":\"UnitType\"},\"Item4\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Item5\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":12},\"Item2\":{\"Line\":1,\"Column\":14}}]}},\"Offset\":{\"Item1\":72,\"Item2\":4},\"Comments\":{\"OpeningComments\":[\"TODO:\",\"Encode Vectors/Arrays as Amplitudes (For A, b, and similar (A~. and B~))\",\"Make the HHL operation\",\"Make the QPE/QAE operation\",\"Use HHL and QAE to make QsolX\",\"Use HHL and QAE and QsolX to make QsolR\",\"Use QAE to make norm of X\",\"Use QAE to make norm of R\",\"Make the f(x) = log(norm(R))^2 + log(norm(X))^2 operation\",\"Make the QMF algorithm\",\"\",\"Specifics of every operation we need to implement:\",\"\",\"Encode Vectors/Arrays as Amplitudes\",\"Inputs: datapoints (a classical set of (x, y) points), mu (a binary qubit register representing the mu value), width (a classical value to tell you the degree of the polynomial)\",\"Outputs: a qubit register with A~ encoded into the amplitudes, a qubit register with b~ encoded into the amplitudes\",\"Example:\",\"Given datapoints (0, 1), (2, 3), (5, 3), (7, 1), a mu of 1, and a width of 4\",\"b is the y values: [1, 3, 3, 1]\",\"A is the x values to the degree of the polynomial:\",\"|0^3, 0^2, 0^1, 0^0|   |0,   0,  0, 1|\",\"|2^3, 2^2, 2^1, 2^0|   |8,   4,  2, 1|\",\"|5^3, 5^2, 5^1, 5^0| = |125, 25, 5, 1|\",\"|7^3, 7^2, 7^1, 7^0|   |343, 49, 7, 1|\",\"\",\"Append 0s to the bottom of b to get b~:\",\"[1, 3, 3, 1, 0, 0, 0, 0]\",\"\",\"Append mu * I (the identity matrix) to the bottom of A in order to get A~:\",\"|0,   0,  0, 1|\",\"|8,   4,  2, 1|\",\"|125, 25, 5, 1|\",\"|343, 49, 7, 1|\",\"|1,   0,  0, 0|\",\"|0,   1,  0, 0|\",\"|0,   0,  1, 0|\",\"|0,   0,  0, 1|\",\"\",\"Next, normalize the vector b~ (size of 1) and encode it as the magnitudes of a (in this case) 3-qubit register:\",\"1/whatever * (1|000> + 3|001> + 3|010> + 1|011> + 0|100> + 0|101> + 0|110> + 0|111>)\",\"\",\"Next, do the same for every column of A, and store it as a list of column vectors (Qubit[column index][row index]). (NOTE: it may actually be stores as a list of row vectors, so Qubit[row index][column index]. I don't really know, but be prepared to change it if that is the case.)\",\"\",\"Return a tuple of (b~, A~)\",\"\",\"\",\"Make the HHL Operation\",\"I'm still a bit unsure of the specific details\",\"\",\"\",\"Make the QAE Operation\",\"Inputs: Qubit register, index\"],\"ClosingComments\":[]}}],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\Bloch Beavers Least Squared Solver\\\\main.qs\",\"Position\":{\"Item1\":73,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"UnitType\"},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Result\"}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\Bloch Beavers Least Squared Solver\\\\main.qs\",\"Position\":{\"Item1\":73,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareStateB\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":14,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":24}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"data\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Int\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":26},\"Item2\":{\"Line\":1,\"Column\":30}}}]},{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"qubits\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Qubit\"}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":42},\"Item2\":{\"Line\":1,\"Column\":48}}}]},{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"entangledAmplitudeb\"]},\"Type\":{\"Case\":\"Qubit\"},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":60},\"Item2\":{\"Line\":1,\"Column\":79}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"TupleType\",\"Fields\":[[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Int\"}]}]},{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Qubit\"}]},{\"Case\":\"Qubit\"}]]},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareStateB\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":14,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":24}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[{\"TypeId\":{\"Case\":\"Value\",\"Fields\":[{\"Namespace\":\"Microsoft.Quantum.Core\",\"Name\":\"EntryPoint\",\"Range\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]}}]},\"TypeIdRange\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]},\"Argument\":{\"Item1\":{\"Case\":\"UnitValue\"},\"Item2\":[],\"Item3\":{\"Case\":\"UnitType\"},\"Item4\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Item5\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":12},\"Item2\":{\"Line\":1,\"Column\":14}}]}},\"Offset\":{\"Item1\":40,\"Item2\":4},\"Comments\":{\"OpeningComments\":[],\"ClosingComments\":[]}}],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":41,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"UnitType\"},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":41,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"Documentation\":[]}")]
 #line hidden
 namespace Least.Squares.Solver
 {
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.qs", OperationFunctor.Body, 74, -1)]
-    public partial class MainOp : Operation<QVoid, IQArray<Result>>, ICallable
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 15, 42)]
+    public partial class prepareStateB : Operation<(IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit), QVoid>, ICallable
     {
-        public MainOp(IOperationFactory m) : base(m)
+        public prepareStateB(IOperationFactory m) : base(m)
         {
         }
 
-        String ICallable.Name => "MainOp";
-        String ICallable.FullName => "Least.Squares.Solver.MainOp";
-        public static EntryPointInfo<QVoid, IQArray<Result>> Info => new EntryPointInfo<QVoid, IQArray<Result>>(typeof(MainOp));
-        protected Allocate Allocate__
+        public class In : QTuple<(IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit)>, IApplyData
+        {
+            public In((IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit) data) : base(data)
+            {
+            }
+
+            System.Collections.Generic.IEnumerable<Qubit> IApplyData.Qubits
+            {
+                get
+                {
+                    return Qubit.Concat(((IApplyData)Data.Item2)?.Qubits, ((IApplyData)Data.Item3)?.Qubits);
+                }
+            }
+        }
+
+        String ICallable.Name => "prepareStateB";
+        String ICallable.FullName => "Least.Squares.Solver.prepareStateB";
+        protected ICallable<Int64, Double> Microsoft__Quantum__Convert__IntAsDouble
         {
             get;
             set;
         }
 
-        protected Release Release__
+        protected ICallable<Double, Int64> Microsoft__Quantum__Math__Ceiling
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<Double, Double> Microsoft__Quantum__Math__Lg
+        {
+            get;
+            set;
+        }
+
+        protected ICallable Length__
         {
             get;
             set;
@@ -53,26 +81,186 @@ namespace Least.Squares.Solver
             set;
         }
 
-        protected ICallable<IQArray<Qubit>, IQArray<Result>> Microsoft__Quantum__Measurement__MultiM
+        protected ICallable<(Int64,Int64), IQArray<Boolean>> Microsoft__Quantum__Convert__IntAsBoolArray
         {
             get;
             set;
         }
 
-        public override Func<QVoid, IQArray<Result>> __Body__ => (__in__) =>
+        protected IUnitary<(Pauli,Boolean,IQArray<Boolean>,IQArray<Qubit>)> Microsoft__Quantum__Canon__ApplyPauliFromBitString
         {
+            get;
+            set;
+        }
+
+        protected IUnitary<(Double,Qubit)> Microsoft__Quantum__Intrinsic__Ry
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<Double, Double> Microsoft__Quantum__Math__ArcSin
+        {
+            get;
+            set;
+        }
+
+        public override Func<(IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit), QVoid> __Body__ => (__in__) =>
+        {
+            var (data,qubits,entangledAmplitudeb) = __in__;
+#line 20 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var maxB = 0D;
+#line 21 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            foreach (var i in data)
 #line hidden
             {
-#line 76 "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.qs"
-                var q = Allocate__.Apply(4L);
+#line 21 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                if ((Microsoft__Quantum__Convert__IntAsDouble.Apply(i[1L]) > maxB))
+                {
+#line 21 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                    maxB = Microsoft__Quantum__Convert__IntAsDouble.Apply(i[1L]);
+                }
+            }
+
+#line 23 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var b = new QArray<Double>();
+#line 24 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            foreach (var i in data)
+#line hidden
+            {
+#line 24 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                b = QArray<Double>.Add(b, new QArray<Double>((Microsoft__Quantum__Convert__IntAsDouble.Apply(i[1L]) / maxB)));
+            }
+
+#line 26 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var n_b = Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(b.Length)));
+#line 28 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            Microsoft__Quantum__Canon__ApplyToEach.Apply((Microsoft__Quantum__Intrinsic__H, qubits));
+#line 29 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            foreach (var i in new QRange(0L, (2L.Pow(n_b) - 1L)))
+#line hidden
+            {
+#line 30 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                var binaryrepresentation = (IQArray<Boolean>)Microsoft__Quantum__Convert__IntAsBoolArray.Apply((i, n_b));
+#line 31 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                Microsoft__Quantum__Canon__ApplyPauliFromBitString.Apply((Pauli.PauliX, false, binaryrepresentation, qubits));
+#line 32 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                Microsoft__Quantum__Intrinsic__Ry.Controlled.Apply((qubits, ((2D * Microsoft__Quantum__Math__ArcSin.Apply(b[i])), entangledAmplitudeb)));
+#line 33 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                Microsoft__Quantum__Canon__ApplyPauliFromBitString.Apply((Pauli.PauliX, false, binaryrepresentation, qubits));
+            }
+
+#line hidden
+            return QVoid.Instance;
+        }
+
+        ;
+        public override void __Init__()
+        {
+            this.Microsoft__Quantum__Convert__IntAsDouble = this.__Factory__.Get<ICallable<Int64, Double>>(typeof(global::Microsoft.Quantum.Convert.IntAsDouble));
+            this.Microsoft__Quantum__Math__Ceiling = this.__Factory__.Get<ICallable<Double, Int64>>(typeof(global::Microsoft.Quantum.Math.Ceiling));
+            this.Microsoft__Quantum__Math__Lg = this.__Factory__.Get<ICallable<Double, Double>>(typeof(global::Microsoft.Quantum.Math.Lg));
+            this.Length__ = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Core.Length<>));
+            this.Microsoft__Quantum__Canon__ApplyToEach = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Canon.ApplyToEach<>));
+            this.Microsoft__Quantum__Intrinsic__H = this.__Factory__.Get<IUnitary<Qubit>>(typeof(global::Microsoft.Quantum.Intrinsic.H));
+            this.Microsoft__Quantum__Convert__IntAsBoolArray = this.__Factory__.Get<ICallable<(Int64,Int64), IQArray<Boolean>>>(typeof(global::Microsoft.Quantum.Convert.IntAsBoolArray));
+            this.Microsoft__Quantum__Canon__ApplyPauliFromBitString = this.__Factory__.Get<IUnitary<(Pauli,Boolean,IQArray<Boolean>,IQArray<Qubit>)>>(typeof(global::Microsoft.Quantum.Canon.ApplyPauliFromBitString));
+            this.Microsoft__Quantum__Intrinsic__Ry = this.__Factory__.Get<IUnitary<(Double,Qubit)>>(typeof(global::Microsoft.Quantum.Intrinsic.Ry));
+            this.Microsoft__Quantum__Math__ArcSin = this.__Factory__.Get<ICallable<Double, Double>>(typeof(global::Microsoft.Quantum.Math.ArcSin));
+        }
+
+        public override IApplyData __DataIn__((IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit) data) => new In(data);
+        public override IApplyData __DataOut__(QVoid data) => data;
+        public static System.Threading.Tasks.Task<QVoid> Run(IOperationFactory __m__, IQArray<IQArray<Int64>> data, IQArray<Qubit> qubits, Qubit entangledAmplitudeb)
+        {
+            return __m__.Run<prepareStateB, (IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit), QVoid>((data, qubits, entangledAmplitudeb));
+        }
+    }
+
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 42, -1)]
+    public partial class MainOp : Operation<QVoid, QVoid>, ICallable
+    {
+        public MainOp(IOperationFactory m) : base(m)
+        {
+        }
+
+        String ICallable.Name => "MainOp";
+        String ICallable.FullName => "Least.Squares.Solver.MainOp";
+        public static EntryPointInfo<QVoid, QVoid> Info => new EntryPointInfo<QVoid, QVoid>(typeof(MainOp));
+        protected Allocate Allocate__
+        {
+            get;
+            set;
+        }
+
+        protected Release Release__
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<Double, Int64> Microsoft__Quantum__Math__Ceiling
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<Double, Double> Microsoft__Quantum__Math__Lg
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<Int64, Double> Microsoft__Quantum__Convert__IntAsDouble
+        {
+            get;
+            set;
+        }
+
+        protected ICallable Length__
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<(IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit), QVoid> prepareStateB__
+        {
+            get;
+            set;
+        }
+
+        protected ICallable Microsoft__Quantum__Diagnostics__DumpMachine
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<IQArray<Qubit>, QVoid> ResetAll__
+        {
+            get;
+            set;
+        }
+
+        public override Func<QVoid, QVoid> __Body__ => (__in__) =>
+        {
+#line 57 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var polynomialDegree = 3L;
+#line 58 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var data = (IQArray<IQArray<Int64>>)new QArray<IQArray<Int64>>(new QArray<Int64>(0L, 1L), new QArray<Int64>(2L, 4L), new QArray<Int64>(3L, 5L), new QArray<Int64>(4L, 10L), new QArray<Int64>(4L, 4L), new QArray<Int64>(7L, 3L), new QArray<Int64>(7L, 2L), new QArray<Int64>(5L, 1L));
+#line hidden
+            {
+#line 61 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                var (bAmplitude,bIndex) = (Allocate__.Apply(), Allocate__.Apply(Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(data.Length)))));
 #line hidden
                 bool __arg1__ = true;
                 try
                 {
-#line 77 "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.qs"
-                    Microsoft__Quantum__Canon__ApplyToEach.Apply((Microsoft__Quantum__Intrinsic__H, q));
-#line 78 "C:\\Users\\chris\\Git-Repos\\Bloch Beavers Least Squared Solver\\main.qs"
-                    return Microsoft__Quantum__Measurement__MultiM.Apply(q);
+#line 62 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                    prepareStateB__.Apply((data, bIndex, bAmplitude));
+#line 67 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                    Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
+#line 68 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                    ResetAll__.Apply(QArray<Qubit>.Add(bIndex, new QArray<Qubit>(bAmplitude)));
                 }
 #line hidden
                 catch
@@ -86,10 +274,15 @@ namespace Least.Squares.Solver
                     if (__arg1__)
                     {
 #line hidden
-                        Release__.Apply(q);
+                        Release__.Apply(bAmplitude);
+#line hidden
+                        Release__.Apply(bIndex);
                     }
                 }
             }
+
+#line hidden
+            return QVoid.Instance;
         }
 
         ;
@@ -97,16 +290,20 @@ namespace Least.Squares.Solver
         {
             this.Allocate__ = this.__Factory__.Get<Allocate>(typeof(global::Microsoft.Quantum.Intrinsic.Allocate));
             this.Release__ = this.__Factory__.Get<Release>(typeof(global::Microsoft.Quantum.Intrinsic.Release));
-            this.Microsoft__Quantum__Canon__ApplyToEach = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Canon.ApplyToEach<>));
-            this.Microsoft__Quantum__Intrinsic__H = this.__Factory__.Get<IUnitary<Qubit>>(typeof(global::Microsoft.Quantum.Intrinsic.H));
-            this.Microsoft__Quantum__Measurement__MultiM = this.__Factory__.Get<ICallable<IQArray<Qubit>, IQArray<Result>>>(typeof(global::Microsoft.Quantum.Measurement.MultiM));
+            this.Microsoft__Quantum__Math__Ceiling = this.__Factory__.Get<ICallable<Double, Int64>>(typeof(global::Microsoft.Quantum.Math.Ceiling));
+            this.Microsoft__Quantum__Math__Lg = this.__Factory__.Get<ICallable<Double, Double>>(typeof(global::Microsoft.Quantum.Math.Lg));
+            this.Microsoft__Quantum__Convert__IntAsDouble = this.__Factory__.Get<ICallable<Int64, Double>>(typeof(global::Microsoft.Quantum.Convert.IntAsDouble));
+            this.Length__ = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Core.Length<>));
+            this.prepareStateB__ = this.__Factory__.Get<ICallable<(IQArray<IQArray<Int64>>,IQArray<Qubit>,Qubit), QVoid>>(typeof(prepareStateB));
+            this.Microsoft__Quantum__Diagnostics__DumpMachine = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Diagnostics.DumpMachine<>));
+            this.ResetAll__ = this.__Factory__.Get<ICallable<IQArray<Qubit>, QVoid>>(typeof(global::Microsoft.Quantum.Intrinsic.ResetAll));
         }
 
         public override IApplyData __DataIn__(QVoid data) => data;
-        public override IApplyData __DataOut__(IQArray<Result> data) => data;
-        public static System.Threading.Tasks.Task<IQArray<Result>> Run(IOperationFactory __m__)
+        public override IApplyData __DataOut__(QVoid data) => data;
+        public static System.Threading.Tasks.Task<QVoid> Run(IOperationFactory __m__)
         {
-            return __m__.Run<MainOp, QVoid, IQArray<Result>>(QVoid.Instance);
+            return __m__.Run<MainOp, QVoid, QVoid>(QVoid.Instance);
         }
     }
 }

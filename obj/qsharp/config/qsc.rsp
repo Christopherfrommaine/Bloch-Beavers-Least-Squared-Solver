@@ -1,11 +1,10 @@
 --proj
-    "C:\Users\chris\Git-Repos\Bloch Beavers Least Squared Solver\main"
+    "C:\Users\chris\Git-Repos\LSS Clone\Bloch-Beavers-Least-Squared-Solver\main"
 --build-exe
 --input
-    "C:\Users\chris\Git-Repos\Bloch Beavers Least Squared Solver\.testing\testing.qs"
-    "C:\Users\chris\Git-Repos\Bloch Beavers Least Squared Solver\main.qs"
+    "C:\Users\chris\Git-Repos\LSS Clone\Bloch-Beavers-Least-Squared-Solver\main.qs"
 --output
-    "C:/Users/chris/Git-Repos/Bloch Beavers Least Squared Solver/obj/qsharp/"
+    "C:/Users/chris/Git-Repos/LSS Clone/Bloch-Beavers-Least-Squared-Solver/obj/qsharp/"
 --references
     "C:\Users\chris\.nuget\packages\azure.core\1.25.0\lib\net5.0\Azure.Core.dll"
     "C:\Users\chris\.nuget\packages\azure.identity\1.5.0\lib\netstandard2.0\Azure.Identity.dll"
@@ -43,7 +42,7 @@
     FullComputation
 --skip-monomorphization
 --package-load-fallback-folders
-    "C:/Users/chris/Git-Repos/Bloch Beavers Least Squared Solver/bin/Debug/net6.0/"
+    "C:/Users/chris/Git-Repos/LSS Clone/Bloch-Beavers-Least-Squared-Solver/bin/Debug/net6.0/"
 --assembly-properties
     DocsPackageId:main
     ExecutionTarget:Any
