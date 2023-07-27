@@ -9,6 +9,7 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Simulation;
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Diagnostics;
+    
 
 
 
@@ -46,33 +47,43 @@ namespace Least.Squares.Solver {
         //Do all of the above functions in order
         //Uncompute QPE
     
-    
 
+    
     operation prepareAmplitudeB (b : Double[], register : Qubit[]) : Unit{
-        mutable amplitudeArray = [b];
+        mutable ampArray = [b];
         for i in 0 .. Length(register) - 1 {
-            Message("HI 0");
-            mutable tempAmpArray = [0., size=0];
-            mutable temp = 0.;
-            for j in 0 .. Length(amplitudeArray[i]) - 1 {
-                Message("HI 4");
-                set temp += amplitudeArray[i][j] ^ 2.;
+            mutable tempArray = [0., size=0];
+            mutable tempValue = 0.;
+            for j in 0 .. Length(ampArray[i]) - 1 {
+                set tempValue += ampArray[i][j] ^ 2.;
                 if j % 2 == 1 {
-                    set tempAmpArray += [Sqrt(temp)];
+                    set tempArray += [Sqrt(tempValue)];
+                    set tempValue = 0.;
                 }
-                Message("HI 5");
-                let theta = 2. * ArcSin(amplitudeArray[i][j]);
-                Message("HI 6");
-                Message($"{i}, {j}, {Length(register)}, {Length(register[i + 1 .. Length(register) - 1])}, {amplitudeArray}, {IntAsBoolArray(j, Length(register) - i - 1)}");
-                ApplyPauliFromBitString(PauliX, false, IntAsBoolArray(j, Length(register) - i - 1), register[i + 1 .. Length(register) - 1]);
-                Message("HI");
-                Controlled Ry(register[i + 1 .. Length(register) - 1], (theta, register[i]));
-                Message("HI 1");
-                ApplyPauliFromBitString(PauliX, false, IntAsBoolArray(j, Length(register) - i - 1), register[i + 1 .. Length(register) - 1]);
-                Message("HI 2");
             }
-            Message("HI 3");
-            set amplitudeArray += [tempAmpArray];
+            set ampArray += [tempArray];
+        }
+        Message($"Amp: {ampArray}");
+        for i in Length(ampArray) - 2 .. -1 .. 0 {
+            for j in 0 .. Length(ampArray[i]) - 1 {
+                Message($"{i}, {j}");
+            }
+        }
+
+        for i in Length(ampArray) - 2 .. -1 .. 0 {
+            for j in 0 .. Length(ampArray[i]) - 1 {
+                let value = ampArray[i][j];
+                let theta = 2. * ArcSin(value);
+                let binrepr = IntAsBoolArray(j, Ceiling(Lg(IntAsDouble(Length(ampArray[i])))));
+                let controlls = i + 1 .. Length(ampArray[i]) - 1;
+                Message($"{i}, {j}, {binrepr}");
+                Message($"{Length(register)}");
+                Message($"{([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])[controlls]}");
+
+                ApplyPauliFromBitString(PauliX, false, binrepr, register[controlls]);
+                Controlled Ry(register[controlls], (theta, register[i]));
+                ApplyPauliFromBitString(PauliX, false, binrepr, register[controlls]);
+            }
         }
 
     }
@@ -90,7 +101,21 @@ namespace Least.Squares.Solver {
         mutable b = [];
         for i in data {set b += [i[1] / normFactor];} //Gets the b vecotor normalized w/ all entries < 1
 
-        prepareAmplitudeB(b, register);
+        Message($"B (normalized): {b}");
+
+        for i in Length(register) - 1 .. -1 .. 0 {
+            mutable squareSum = 0.;
+            for j in 0 .. Length(b) - 1 {
+                if j % 2 ^ i == 1 {
+                    set squareSum += b[j] ^ 2.;
+                }
+            }
+            let theta = 2. * ArcSin(Sqrt(squareSum));
+            let binrepr = IntAsBoolArray()
+            Message($"{binrepr}");
+            Message($"{i}, Theta: {theta}, {([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])[i + 1 .. Length(register) - 1]}");
+            Controlled Ry(register[i + 1 .. Length(register) - 1], (theta, register[i]));
+        }
     }
 
 
