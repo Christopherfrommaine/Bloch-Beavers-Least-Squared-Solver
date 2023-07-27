@@ -170,6 +170,13 @@ namespace Least.Squares.Solver {
         ApplyUnitary(eiAt, LittleEndian(qubits));
     }
 
+    operation QCR(b : Qubit[], c : Qubit[], U : (Qubit[] => Unit is Adj + Ctl)) : Unit is Adj {
+        for controlQubit in c {
+            Controlled U([controlQubit], b);
+        }
+    }
+
+
 
     @EntryPoint()
     operation MainOp() : Unit {
