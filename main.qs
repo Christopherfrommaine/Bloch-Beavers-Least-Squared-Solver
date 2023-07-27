@@ -59,7 +59,7 @@ namespace Least.Squares.Solver {
 
     function displayMatrix(inputMatrix : Double[][], name : String) : Unit {
         let matrix = transpose(inputMatrix);
-        mutable o = name + "\n|";
+        mutable o = name;
 
         mutable maxLength = 0;
         for column in matrix {
@@ -69,11 +69,12 @@ namespace Least.Squares.Solver {
         }
 
         for column in matrix {
+            set o += "\n|";
             for element in column {
                 set o += DoubleAsString(element);
                 for space in 0 .. maxLength - (element > 1. ? Ceiling(Log10(element)) | 1) {set o += " ";}
             }
-            set o += "|\n|";
+            set o += "|";
         }
         Message(o);
     }
@@ -180,8 +181,6 @@ namespace Least.Squares.Solver {
         prepareStateB(data, b);    
         DumpMachine();
         
-
-
         let Aoriginal = prepareOriginalMatrixA(data, widthA);
         let A = convertAtoHermitian(Aoriginal);
         
