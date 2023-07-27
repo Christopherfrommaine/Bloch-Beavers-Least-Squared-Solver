@@ -48,7 +48,34 @@ namespace Least.Squares.Solver {
     
     
 
-    
+    operation prepareAmplitudeB (b : Double[], register : Qubit[]) : Unit{
+        mutable amplitudeArray = [b];
+        for i in 0 .. Length(register) - 1 {
+            Message("HI 0");
+            mutable tempAmpArray = [0., size=0];
+            mutable temp = 0.;
+            for j in 0 .. Length(amplitudeArray[i]) - 1 {
+                Message("HI 4");
+                set temp += amplitudeArray[i][j] ^ 2.;
+                if j % 2 == 1 {
+                    set tempAmpArray += [Sqrt(temp)];
+                }
+                Message("HI 5");
+                let theta = 2. * ArcSin(amplitudeArray[i][j]);
+                Message("HI 6");
+                Message($"{i}, {j}, {Length(register)}, {Length(register[i + 1 .. Length(register) - 1])}, {amplitudeArray}, {IntAsBoolArray(j, Length(register) - i - 1)}");
+                ApplyPauliFromBitString(PauliX, false, IntAsBoolArray(j, Length(register) - i - 1), register[i + 1 .. Length(register) - 1]);
+                Message("HI");
+                Controlled Ry(register[i + 1 .. Length(register) - 1], (theta, register[i]));
+                Message("HI 1");
+                ApplyPauliFromBitString(PauliX, false, IntAsBoolArray(j, Length(register) - i - 1), register[i + 1 .. Length(register) - 1]);
+                Message("HI 2");
+            }
+            Message("HI 3");
+            set amplitudeArray += [tempAmpArray];
+        }
+
+    }
     
 
     operation prepareStateB (data : Double[][], register : Qubit[]) : Unit {
@@ -63,15 +90,7 @@ namespace Least.Squares.Solver {
         mutable b = [];
         for i in data {set b += [i[1] / normFactor];} //Gets the b vecotor normalized w/ all entries < 1
 
-        let n_b = Ceiling(Lg(IntAsDouble(Length(b)))); //Find qubit length of b
-
-        ApplyToEach(H, register);
-        for i in 0 .. 2 ^ n_b - 1 {
-            let binaryrepresentation = IntAsBoolArray(i, n_b);
-            // ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
-            // Controlled Ry(qubits, (2. * ArcSin(b[i]), entangledAmplitudeb));
-            // ApplyPauliFromBitString(PauliX, false, binaryrepresentation, qubits);
-        }
+        prepareAmplitudeB(b, register);
     }
 
 
@@ -161,7 +180,7 @@ namespace Least.Squares.Solver {
 
 
         use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data))))];
-        //prepareStateB(data, b);
+        prepareStateB(data, b);
         
         DumpMachine();
         ResetAll(b);
