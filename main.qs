@@ -9,6 +9,7 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Simulation;
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Synthesis;
 
 
 
@@ -139,7 +140,11 @@ namespace Least.Squares.Solver {
         return o;
     }
 
-
+    operation U_f(A : Double[][], t : Int, qubits : Qubit[]) : Unit {
+        mutable eiAt = [[PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[0][0])), PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[0][1]))],
+                        [PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[1][0])), PowC(Complex(E(), 0.0), Complex(0.0, IntAsDouble(t) * A[1][1]))]];
+        ApplyUnitary(eiAt, LittleEndian(qubits));
+    }
 
 
 
