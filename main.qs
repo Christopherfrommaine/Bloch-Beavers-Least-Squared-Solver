@@ -10,6 +10,22 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Diagnostics;
 
+
+
+    //Prep (Almost Done)
+        //Prep b
+        //Prep A (Hermitian)
+    //Find Eigenvectors of A
+    //Get U given A an t
+        //U = e^iAt
+        //Convert A to Adiag
+        //Find Udiag
+        //Convert to U
+
+        //V = (u0, u1) (The Eigenvectors)
+        //Adiag = V_t A V
+
+    
     
 
     operation prepareStateB (data : Double[][], qubits : Qubit[], entangledAmplitudeb : Qubit) : Unit {
@@ -35,7 +51,7 @@ namespace Least.Squares.Solver {
     }
 
 
-    function displayMatrix(matrix : Double[][], name: String? = () ) : Unit {
+    function displayMatrix(matrix : Double[][]) : Unit {
         mutable o = "|";
         for column in matrix {
             for element in column {
@@ -43,7 +59,7 @@ namespace Least.Squares.Solver {
             }
             set o += "|\n|";
         }
-        Message($"Matrix: {o[0 .. Length(o) - 3]}");
+        Message($"Matrix: {o}");
     }
 
 
