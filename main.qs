@@ -9,6 +9,7 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Simulation;
     open Microsoft.Quantum.Arithmetic;
     open Microsoft.Quantum.Diagnostics;
+    open Microsoft.Quantum.Preparation;
     
 
 
@@ -46,47 +47,7 @@ namespace Least.Squares.Solver {
     //Main
         //Do all of the above functions in order
         //Uncompute QPE
-    
 
-    
-    operation prepareAmplitudeB (b : Double[], register : Qubit[]) : Unit{
-        mutable ampArray = [b];
-        for i in 0 .. Length(register) - 1 {
-            mutable tempArray = [0., size=0];
-            mutable tempValue = 0.;
-            for j in 0 .. Length(ampArray[i]) - 1 {
-                set tempValue += ampArray[i][j] ^ 2.;
-                if j % 2 == 1 {
-                    set tempArray += [Sqrt(tempValue)];
-                    set tempValue = 0.;
-                }
-            }
-            set ampArray += [tempArray];
-        }
-        Message($"Amp: {ampArray}");
-        for i in Length(ampArray) - 2 .. -1 .. 0 {
-            for j in 0 .. Length(ampArray[i]) - 1 {
-                Message($"{i}, {j}");
-            }
-        }
-
-        for i in Length(ampArray) - 2 .. -1 .. 0 {
-            for j in 0 .. Length(ampArray[i]) - 1 {
-                let value = ampArray[i][j];
-                let theta = 2. * ArcSin(value);
-                let binrepr = IntAsBoolArray(j, Ceiling(Lg(IntAsDouble(Length(ampArray[i])))));
-                let controlls = i + 1 .. Length(ampArray[i]) - 1;
-                Message($"{i}, {j}, {binrepr}");
-                Message($"{Length(register)}");
-                Message($"{([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])[controlls]}");
-
-                ApplyPauliFromBitString(PauliX, false, binrepr, register[controlls]);
-                Controlled Ry(register[controlls], (theta, register[i]));
-                ApplyPauliFromBitString(PauliX, false, binrepr, register[controlls]);
-            }
-        }
-
-    }
     
 
     operation prepareStateB (data : Double[][], register : Qubit[]) : Unit {
@@ -100,22 +61,9 @@ namespace Least.Squares.Solver {
 
         mutable b = [];
         for i in data {set b += [i[1] / normFactor];} //Gets the b vecotor normalized w/ all entries < 1
+        Message($"{b}");
 
-        Message($"B (normalized): {b}");
-
-        for i in Length(register) - 1 .. -1 .. 0 {
-            mutable squareSum = 0.;
-            for j in 0 .. Length(b) - 1 {
-                if j % 2 ^ i == 1 {
-                    set squareSum += b[j] ^ 2.;
-                }
-            }
-            let theta = 2. * ArcSin(Sqrt(squareSum));
-            let binrepr = IntAsBoolArray()
-            Message($"{binrepr}");
-            Message($"{i}, Theta: {theta}, {([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])[i + 1 .. Length(register) - 1]}");
-            Controlled Ry(register[i + 1 .. Length(register) - 1], (theta, register[i]));
-        }
+        PrepareArbitraryStateD(b, LittleEndian(register));
     }
 
 

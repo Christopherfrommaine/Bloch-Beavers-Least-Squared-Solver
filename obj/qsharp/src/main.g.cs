@@ -14,22 +14,22 @@ using Microsoft.Quantum.Intrinsic;
 using Microsoft.Quantum.Intrinsic.Interfaces;
 using Microsoft.Quantum.Simulation.Core;
 
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareStateB\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":91,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":24}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"data\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":26},\"Item2\":{\"Line\":1,\"Column\":30}}}]},{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"register\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Qubit\"}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":45},\"Item2\":{\"Line\":1,\"Column\":53}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"TupleType\",\"Fields\":[[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Qubit\"}]}]]},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareStateB\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":91,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":24}},\"Documentation\":[]}")]
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"displayMatrix\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":119,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":23}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"inputMatrix\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":24},\"Item2\":{\"Line\":1,\"Column\":35}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"displayMatrix\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":119,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":23}},\"Documentation\":[]}")]
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"transpose\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":142,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":19}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"matrix\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":20},\"Item2\":{\"Line\":1,\"Column\":26}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"transpose\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":142,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":19}},\"Documentation\":[]}")]
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareOriginalMatrixA\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":155,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":32}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"data\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":34},\"Item2\":{\"Line\":1,\"Column\":38}}}]},{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"width\"]},\"Type\":{\"Case\":\"Int\"},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":53},\"Item2\":{\"Line\":1,\"Column\":58}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"TupleType\",\"Fields\":[[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},{\"Case\":\"Int\"}]]},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareOriginalMatrixA\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":155,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":32}},\"Documentation\":[]}")]
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"convertAtoHermitian\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":168,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":29}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"A\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":31},\"Item2\":{\"Line\":1,\"Column\":32}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"convertAtoHermitian\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":168,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":29}},\"Documentation\":[]}")]
-[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[{\"TypeId\":{\"Case\":\"Value\",\"Fields\":[{\"Namespace\":\"Microsoft.Quantum.Core\",\"Name\":\"EntryPoint\",\"Range\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]}}]},\"TypeIdRange\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]},\"Argument\":{\"Item1\":{\"Case\":\"UnitValue\"},\"Item2\":[],\"Item3\":{\"Case\":\"UnitType\"},\"Item4\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Item5\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":12},\"Item2\":{\"Line\":1,\"Column\":14}}]}},\"Offset\":{\"Item1\":197,\"Item2\":4},\"Comments\":{\"OpeningComments\":[],\"ClosingComments\":[]}}],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":198,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"UnitType\"},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
-[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":198,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareStateB\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":92,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":24}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"data\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":26},\"Item2\":{\"Line\":1,\"Column\":30}}}]},{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"register\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Qubit\"}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":45},\"Item2\":{\"Line\":1,\"Column\":53}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"TupleType\",\"Fields\":[[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Qubit\"}]}]]},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareStateB\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":92,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":24}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"displayMatrix\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":109,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":23}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"inputMatrix\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":24},\"Item2\":{\"Line\":1,\"Column\":35}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"displayMatrix\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":109,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":23}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"transpose\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":132,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":19}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"matrix\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":20},\"Item2\":{\"Line\":1,\"Column\":26}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"transpose\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":132,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":19}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareOriginalMatrixA\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":145,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":32}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"data\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":34},\"Item2\":{\"Line\":1,\"Column\":38}}}]},{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"width\"]},\"Type\":{\"Case\":\"Int\"},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":53},\"Item2\":{\"Line\":1,\"Column\":58}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"TupleType\",\"Fields\":[[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},{\"Case\":\"Int\"}]]},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"prepareOriginalMatrixA\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":145,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":32}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Function\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"convertAtoHermitian\"},\"Attributes\":[],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":158,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":29}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[{\"Case\":\"QsTupleItem\",\"Fields\":[{\"VariableName\":{\"Case\":\"ValidName\",\"Fields\":[\"A\"]},\"Type\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"InferredInformation\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Position\":{\"Case\":\"Null\"},\"Range\":{\"Item1\":{\"Line\":1,\"Column\":31},\"Item2\":{\"Line\":1,\"Column\":32}}}]}]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"ReturnType\":{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"ArrayType\",\"Fields\":[{\"Case\":\"Double\"}]}]},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"convertAtoHermitian\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":158,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":10},\"Item2\":{\"Line\":1,\"Column\":29}},\"Documentation\":[]}")]
+[assembly: CallableDeclaration("{\"Kind\":{\"Case\":\"Operation\"},\"QualifiedName\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[{\"TypeId\":{\"Case\":\"Value\",\"Fields\":[{\"Namespace\":\"Microsoft.Quantum.Core\",\"Name\":\"EntryPoint\",\"Range\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]}}]},\"TypeIdRange\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":2},\"Item2\":{\"Line\":1,\"Column\":12}}]},\"Argument\":{\"Item1\":{\"Case\":\"UnitValue\"},\"Item2\":[],\"Item3\":{\"Case\":\"UnitType\"},\"Item4\":{\"IsMutable\":false,\"HasLocalQuantumDependency\":false},\"Item5\":{\"Case\":\"Value\",\"Fields\":[{\"Item1\":{\"Line\":1,\"Column\":12},\"Item2\":{\"Line\":1,\"Column\":14}}]}},\"Offset\":{\"Item1\":187,\"Item2\":4},\"Comments\":{\"OpeningComments\":[],\"ClosingComments\":[]}}],\"Modifiers\":{\"Access\":{\"Case\":\"DefaultAccess\"}},\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":188,\"Item2\":4},\"SymbolRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"ArgumentTuple\":{\"Case\":\"QsTuple\",\"Fields\":[[]]},\"Signature\":{\"TypeParameters\":[],\"ArgumentType\":{\"Case\":\"UnitType\"},\"ReturnType\":{\"Case\":\"UnitType\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}}},\"Documentation\":[]}")]
+[assembly: SpecializationDeclaration("{\"Kind\":{\"Case\":\"QsBody\"},\"TypeArguments\":{\"Case\":\"Null\"},\"Information\":{\"Characteristics\":{\"Case\":\"EmptySet\"},\"InferredInformation\":{\"IsSelfAdjoint\":false,\"IsIntrinsic\":false}},\"Parent\":{\"Namespace\":\"Least.Squares.Solver\",\"Name\":\"MainOp\"},\"Attributes\":[],\"SourceFile\":\"C:\\\\Users\\\\chris\\\\Git-Repos\\\\LSS Clone\\\\Bloch-Beavers-Least-Squared-Solver\\\\main.qs\",\"Position\":{\"Item1\":188,\"Item2\":4},\"HeaderRange\":{\"Item1\":{\"Line\":1,\"Column\":11},\"Item2\":{\"Line\":1,\"Column\":17}},\"Documentation\":[]}")]
 #line hidden
 namespace Least.Squares.Solver
 {
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 92, 120)]
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 93, 110)]
     public partial class prepareStateB : Operation<(IQArray<IQArray<Double>>,IQArray<Qubit>), QVoid>, ICallable
     {
         public prepareStateB(IOperationFactory m) : base(m)
@@ -65,19 +65,13 @@ namespace Least.Squares.Solver
             set;
         }
 
-        protected ICallable Length__
+        protected IUnitary<(IQArray<Double>,Microsoft.Quantum.Arithmetic.LittleEndian)> Microsoft__Quantum__Preparation__PrepareArbitraryStateD
         {
             get;
             set;
         }
 
-        protected ICallable<Double, Double> Microsoft__Quantum__Math__ArcSin
-        {
-            get;
-            set;
-        }
-
-        protected IUnitary<(Double,Qubit)> Microsoft__Quantum__Intrinsic__Ry
+        protected ICallable<IQArray<Qubit>, Microsoft.Quantum.Arithmetic.LittleEndian> Microsoft__Quantum__Arithmetic__LittleEndian
         {
             get;
             set;
@@ -86,56 +80,32 @@ namespace Least.Squares.Solver
         public override Func<(IQArray<IQArray<Double>>,IQArray<Qubit>), QVoid> __Body__ => (__in__) =>
         {
             var (data,register) = __in__;
-#line 97 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            var sumOfSquares = 0D;
 #line 98 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var sumOfSquares = 0D;
+#line 99 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var i in data)
 #line hidden
             {
-#line 98 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 99 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 sumOfSquares = (sumOfSquares + i[1L].Pow(2D));
             }
 
-#line 99 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 100 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var normFactor = Microsoft__Quantum__Math__Sqrt.Apply(sumOfSquares);
-#line 101 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            var b = new QArray<Double>();
 #line 102 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+            var b = new QArray<Double>();
+#line 103 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var i in data)
 #line hidden
             {
-#line 102 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 103 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 b = QArray<Double>.Add(b, new QArray<Double>((i[1L] / normFactor)));
             }
 
 #line 104 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            Message__.Apply(String.Format("B (normalized): {0}", b));
+            Message__.Apply(String.Format("{0}", b));
 #line 106 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            foreach (var i in new QRange((register.Length - 1L), -(1L), 0L))
-#line hidden
-            {
-#line 107 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                var squareSum = 0D;
-#line 108 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                foreach (var j in new QRange(0L, (b.Length - 1L)))
-#line hidden
-                {
-#line 109 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                    if (((j % 2L.Pow(i)) == 1L))
-                    {
-#line 110 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                        squareSum = (squareSum + b[j].Pow(2D));
-                    }
-                }
-
-#line 113 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                var theta = (2D * Microsoft__Quantum__Math__ArcSin.Apply(Microsoft__Quantum__Math__Sqrt.Apply(squareSum)));
-#line 114 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                Message__.Apply(String.Format("{0}, Theta: {1}, {2}", i, theta, new QArray<Int64>(0L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L).Slice(new QRange((i + 1L), (register.Length - 1L)))));
-#line 115 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                Microsoft__Quantum__Intrinsic__Ry.Controlled.Apply((register.Slice(new QRange((i + 1L), (register.Length - 1L))), (theta, register[i])));
-            }
-
+            Microsoft__Quantum__Preparation__PrepareArbitraryStateD.Apply((b?.Copy(), new Microsoft.Quantum.Arithmetic.LittleEndian(register)));
 #line hidden
             return QVoid.Instance;
         }
@@ -145,9 +115,8 @@ namespace Least.Squares.Solver
         {
             this.Microsoft__Quantum__Math__Sqrt = this.__Factory__.Get<ICallable<Double, Double>>(typeof(global::Microsoft.Quantum.Math.Sqrt));
             this.Message__ = this.__Factory__.Get<ICallable<String, QVoid>>(typeof(global::Microsoft.Quantum.Intrinsic.Message));
-            this.Length__ = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Core.Length<>));
-            this.Microsoft__Quantum__Math__ArcSin = this.__Factory__.Get<ICallable<Double, Double>>(typeof(global::Microsoft.Quantum.Math.ArcSin));
-            this.Microsoft__Quantum__Intrinsic__Ry = this.__Factory__.Get<IUnitary<(Double,Qubit)>>(typeof(global::Microsoft.Quantum.Intrinsic.Ry));
+            this.Microsoft__Quantum__Preparation__PrepareArbitraryStateD = this.__Factory__.Get<IUnitary<(IQArray<Double>,Microsoft.Quantum.Arithmetic.LittleEndian)>>(typeof(global::Microsoft.Quantum.Preparation.PrepareArbitraryStateD));
+            this.Microsoft__Quantum__Arithmetic__LittleEndian = this.__Factory__.Get<ICallable<IQArray<Qubit>, Microsoft.Quantum.Arithmetic.LittleEndian>>(typeof(global::Microsoft.Quantum.Arithmetic.LittleEndian));
         }
 
         public override IApplyData __DataIn__((IQArray<IQArray<Double>>,IQArray<Qubit>) data) => new In(data);
@@ -158,7 +127,7 @@ namespace Least.Squares.Solver
         }
     }
 
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 120, 143)]
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 110, 133)]
     public partial class displayMatrix : Function<IQArray<IQArray<Double>>, QVoid>, ICallable
     {
         public displayMatrix(IOperationFactory m) : base(m)
@@ -200,53 +169,53 @@ namespace Least.Squares.Solver
         public override Func<IQArray<IQArray<Double>>, QVoid> __Body__ => (__in__) =>
         {
             var inputMatrix = __in__;
-#line 121 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 111 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var matrix = (IQArray<IQArray<Double>>)transpose__.Apply(inputMatrix);
-#line 122 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 112 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var o = "|";
-#line 124 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 114 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var maxLength = 0L;
-#line 125 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 115 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var column in matrix)
 #line hidden
             {
-#line 126 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 116 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 foreach (var element in column)
 #line hidden
                 {
-#line 127 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 117 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     if (((element > 1D) && (Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Log10.Apply(element)) > maxLength)))
                     {
-#line 127 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 117 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         maxLength = Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Log10.Apply(element));
                     }
                 }
             }
 
-#line 132 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 122 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var column in matrix)
 #line hidden
             {
-#line 133 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 123 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 foreach (var element in column)
 #line hidden
                 {
-#line 134 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 124 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     o = (o + Microsoft__Quantum__Convert__DoubleAsString.Apply(element));
-#line 135 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 125 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     foreach (var space in new QRange(0L, (maxLength - ((element > 1D) ? Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Log10.Apply(element)) : 1L))))
 #line hidden
                     {
-#line 135 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 125 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         o = (o + " ");
                     }
                 }
 
-#line 137 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 127 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 o = (o + "|\n|");
             }
 
-#line 139 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 129 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             Message__.Apply(String.Format("Matrix: \n{0}", o));
 #line hidden
             return QVoid.Instance;
@@ -270,7 +239,7 @@ namespace Least.Squares.Solver
         }
     }
 
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 143, 156)]
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 133, 146)]
     public partial class transpose : Function<IQArray<IQArray<Double>>, IQArray<IQArray<Double>>>, ICallable
     {
         public transpose(IOperationFactory m) : base(m)
@@ -288,33 +257,33 @@ namespace Least.Squares.Solver
         public override Func<IQArray<IQArray<Double>>, IQArray<IQArray<Double>>> __Body__ => (__in__) =>
         {
             var matrix = __in__;
-#line 144 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 134 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
 #line hidden
             var __arg1__ = new QArray<Double>(0D);
-#line 144 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 134 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var o = new QArray<IQArray<Double>>(QArray.Filled(() => __arg1__, 0L));
-#line 145 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 135 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var i in new QRange(0L, (matrix[0L].Length - 1L)))
 #line hidden
             {
-#line 146 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 136 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
 #line hidden
                 var __arg2__ = 0D;
-#line 146 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 136 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 var temp = new QArray<Double>(QArray.Filled(() => __arg2__, 0L));
-#line 147 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 137 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 foreach (var j in new QRange(0L, (matrix.Length - 1L)))
 #line hidden
                 {
-#line 148 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 138 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     temp = QArray<Double>.Add(temp, new QArray<Double>(matrix[j][i]));
                 }
 
-#line 150 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 140 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 o = QArray<IQArray<Double>>.Add(o, new QArray<IQArray<Double>>(temp?.Copy()));
             }
 
-#line 152 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 142 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             return o;
         }
 
@@ -332,7 +301,7 @@ namespace Least.Squares.Solver
         }
     }
 
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 156, 169)]
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 146, 159)]
     public partial class prepareOriginalMatrixA : Function<(IQArray<IQArray<Double>>,Int64), IQArray<IQArray<Double>>>, ICallable
     {
         public prepareOriginalMatrixA(IOperationFactory m) : base(m)
@@ -359,33 +328,33 @@ namespace Least.Squares.Solver
         public override Func<(IQArray<IQArray<Double>>,Int64), IQArray<IQArray<Double>>> __Body__ => (__in__) =>
         {
             var (data,width) = __in__;
-#line 157 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 147 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
 #line hidden
             var __arg1__ = new QArray<Double>(0D);
-#line 157 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 147 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var A = new QArray<IQArray<Double>>(QArray.Filled(() => __arg1__, 0L));
-#line 158 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 148 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var column in new QRange(0L, (width - 1L)))
 #line hidden
             {
-#line 159 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 149 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
 #line hidden
                 var __arg2__ = 0D;
-#line 159 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 149 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 var temp = new QArray<Double>(QArray.Filled(() => __arg2__, 0L));
-#line 160 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 150 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 foreach (var row in data)
 #line hidden
                 {
-#line 161 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 151 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     temp = QArray<Double>.Add(temp, new QArray<Double>(row[0L].Pow(Microsoft__Quantum__Convert__IntAsDouble.Apply(((width - column) - 1L)))));
                 }
 
-#line 163 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 153 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 A = QArray<IQArray<Double>>.Add(A, new QArray<IQArray<Double>>(temp?.Copy()));
             }
 
-#line 165 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 155 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             return A;
         }
 
@@ -403,7 +372,7 @@ namespace Least.Squares.Solver
         }
     }
 
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 169, 199)]
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 159, 189)]
     public partial class convertAtoHermitian : Function<IQArray<IQArray<Double>>, IQArray<IQArray<Double>>>, ICallable
     {
         public convertAtoHermitian(IOperationFactory m) : base(m)
@@ -427,51 +396,51 @@ namespace Least.Squares.Solver
         public override Func<IQArray<IQArray<Double>>, IQArray<IQArray<Double>>> __Body__ => (__in__) =>
         {
             var A = __in__;
-#line 174 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 164 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var At = (IQArray<IQArray<Double>>)transpose__.Apply(A);
-#line 175 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 165 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var (w,h) = (A.Length, A[0L].Length);
-#line 176 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 166 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
 #line hidden
             var __arg1__ = new QArray<Double>(0D);
-#line 176 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 166 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var o = new QArray<IQArray<Double>>(QArray.Filled(() => __arg1__, 0L));
-#line 178 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 168 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var i in new QRange(0L, ((w + h) - 1L)))
 #line hidden
             {
-#line 179 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 169 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
 #line hidden
                 var __arg2__ = 0D;
-#line 179 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 169 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 var temp = new QArray<Double>(QArray.Filled(() => __arg2__, 0L));
-#line 180 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 170 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 foreach (var j in new QRange(0L, ((h + w) - 1L)))
 #line hidden
                 {
-#line 181 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 171 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     if (((i >= h) && (j < h)))
                     {
-#line 182 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 172 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         temp = QArray<Double>.Add(temp, new QArray<Double>(A[(i - h)][j]));
                     }
                     else if (((i < h) && (j >= h)))
                     {
-#line 185 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 175 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         temp = QArray<Double>.Add(temp, new QArray<Double>(At[i][(j - h)]));
                     }
                     else
                     {
-#line 188 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 178 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         temp = QArray<Double>.Add(temp, new QArray<Double>(0D));
                     }
                 }
 
-#line 191 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 181 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 o = QArray<IQArray<Double>>.Add(o, new QArray<IQArray<Double>>(temp?.Copy()));
             }
 
-#line 193 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 183 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             return o;
         }
 
@@ -490,7 +459,7 @@ namespace Least.Squares.Solver
         }
     }
 
-    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 199, -1)]
+    [SourceLocation("C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs", OperationFunctor.Body, 189, -1)]
     public partial class MainOp : Operation<QVoid, QVoid>, ICallable
     {
         public MainOp(IOperationFactory m) : base(m)
@@ -580,35 +549,35 @@ namespace Least.Squares.Solver
 
         public override Func<QVoid, QVoid> __Body__ => (__in__) =>
         {
-#line 201 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 191 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var widthA = 4L;
-#line 202 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 192 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var data = (IQArray<IQArray<Double>>)new QArray<IQArray<Double>>(new QArray<Double>(0D, 1D), new QArray<Double>(2D, 4D), new QArray<Double>(3D, 5D), new QArray<Double>(4D, 10D), new QArray<Double>(4D, 4D), new QArray<Double>(7D, 3D), new QArray<Double>(7D, 2D), new QArray<Double>(5D, 1D));
 #line hidden
             {
-#line 205 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 195 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 var b = Allocate__.Apply(Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(data.Length))));
 #line hidden
                 bool __arg1__ = true;
                 try
                 {
-#line 206 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 196 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     prepareStateB__.Apply((data, b));
-#line 208 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 198 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
-#line 209 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 199 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     ResetAll__.Apply(b);
-#line 212 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 202 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     var Aoriginal = (IQArray<IQArray<Double>>)prepareOriginalMatrixA__.Apply((data, widthA));
-#line 213 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 203 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     Message__.Apply(String.Format("Aoriginal: {0}", Aoriginal));
-#line 214 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 204 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     var A = (IQArray<IQArray<Double>>)convertAtoHermitian__.Apply(Aoriginal);
-#line 215 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 205 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     Message__.Apply(String.Format("Ahermitian: {0}", A));
-#line 218 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 208 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     displayMatrix__.Apply(Aoriginal);
-#line 219 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 209 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     displayMatrix__.Apply(A);
                 }
 #line hidden
