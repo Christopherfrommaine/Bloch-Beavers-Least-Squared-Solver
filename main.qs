@@ -86,7 +86,7 @@ namespace Least.Squares.Solver {
             }
             set o += "|\n|";
         }
-        Message($"Matrix: \n{o}");
+        Message(o);
     }
 
 
