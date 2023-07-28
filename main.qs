@@ -182,10 +182,10 @@ namespace Least.Squares.Solver {
     @EntryPoint()
     operation MainOp() : Unit {
 
-        let widthA = 4;  //Should be a power of 2. It is one more than the polynomial degree.
+        let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
-        use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data))))];
+        use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
         prepareStateB(data, b);    
         DumpMachine();
         
@@ -197,6 +197,7 @@ namespace Least.Squares.Solver {
         
         use c = Qubit[10];
         QCR(b, c, U_f(A, 1., _));
+        DumpMachine();
 
 
         ResetAll(b);

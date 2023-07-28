@@ -768,13 +768,13 @@ namespace Least.Squares.Solver
         public override Func<QVoid, QVoid> __Body__ => (__in__) =>
         {
 #line 185 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            var widthA = 4L;
+            var widthA = 8L;
 #line 186 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var data = (IQArray<IQArray<Double>>)new QArray<IQArray<Double>>(new QArray<Double>(0D, 1D), new QArray<Double>(2D, 4D), new QArray<Double>(3D, 5D), new QArray<Double>(4D, 10D), new QArray<Double>(4D, 4D), new QArray<Double>(7D, 3D), new QArray<Double>(7D, 2D), new QArray<Double>(5D, 1D));
 #line hidden
             {
 #line 188 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                var b = Allocate__.Apply((Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(data.Length))) + 4L));
+                var b = Allocate__.Apply((Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(data.Length))) + 1L));
 #line hidden
                 bool __arg1__ = true;
                 try
