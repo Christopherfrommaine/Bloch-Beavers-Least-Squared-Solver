@@ -199,11 +199,12 @@ namespace Least.Squares.Solver {
         
         displayMatrix(Aoriginal, "Original A");
         displayMatrix(A, "Hermitian A");
+
+        let t = 1.;
         
         use c = Qubit[10];
-        QCR(b, c, U_f(A, 1., _));
-        DumpMachine();
-
+        QCR(b, c, U_f(A, t, _));
+        Message($"{MultiM(b)}, {MultiM(c)}");
 
         ResetAll(b);
     }
