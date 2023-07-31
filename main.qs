@@ -200,31 +200,56 @@ namespace Least.Squares.Solver {
 
 
         //Inputs
+        
+        let inputMatrixFormsDirectly = true;
+        
+
         let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
+        let Aoriginal = prepareOriginalMatrixA(data, widthA);
+        
 
         //State Preperation (Need to define variables outside of scope of repeat loop)
-        use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
-
-        let Aoriginal = prepareOriginalMatrixA(data, widthA);
-        let A = convertAtoHermitian(Aoriginal);
+        if not inputMatrixFormsDirectly {displayMatrix(Aoriginal, "Original A");}
         
-        displayMatrix(Aoriginal, "Original A");
-        displayMatrix(A, "Hermitian A");
+
+        let directInput_A = [[1., -1. / 3.], [-1. / 3., 1.]];
+        let directInput_bInput = [0., 1.];
+        let directInput_bLength = 1;
+
+        let A = inputMatrixFormsDirectly ? directInput_A | convertAtoHermitian(Aoriginal);
+        displayMatrix(A, "A");
+
+        use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
+
+        if not inputMatrixFormsDirectly {
+            prepareStateB(data, b);
+        }
+        else {
+            PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));
+            DumpMachine();
+        }
+        
+        
 
         //(For QPE)
         use c = Qubit[10];
         use ancilla = Qubit();
 
-        let t = 1.;
-            
+        let t = 3. * PI() / 4.;
 
         //HHL Algorithm
         mutable dontRepeatComputation = false;
+        mutable repitionCount = 0;
         repeat {
             //State Prep Continued
-            prepareStateB(data, b);    
+            if not inputMatrixFormsDirectly {
+                prepareStateB(data, b);
+            }
+            else {
+                PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));
+            }   
             //DumpMachine();
 
 
@@ -238,25 +263,28 @@ namespace Least.Squares.Solver {
             Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
 
             //QPE Controlled Rotation
-            H(ancilla); //THIS LINE IS ONLY FOR TESTING. Tony is currently working on this part
-            set dontRepeatComputation = M(ancilla) == One;
+            ancillaRotations(c, ancilla);
 
+            set dontRepeatComputation = M(ancilla) == One;
             if not dontRepeatComputation {
                 ResetAll(b + c);
             }
+            Message($"Ancilla measured to be " + (dontRepeatComputation ? "One. Continuing..." | "Zero Repeating..."));
+            set repitionCount += 1;
         }
-        until dontRepeatComputation;
+        until dontRepeatComputation or repitionCount > 100;
+        if repitionCount > 100 {Message("Computation Failed: Ancilla never measured to be One");}
 
         //QPE IQPE
         QFT(LittleEndianAsBigEndian(LittleEndian(c)));
         QCR(b, c, U_f_inverse(A, t, _));
         ApplyToEach(H, c);
 
-        //Final Measureement
-        Message($"Output: {MultiM(b)}");
-
         //Reset
         ResetAll(c);
 
+        //Final Measureement
+        DumpRegister((), b);
+        Message($"Output: {MultiM(b)}");
     }
 }
