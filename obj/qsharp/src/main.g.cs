@@ -759,6 +759,18 @@ namespace Least.Squares.Solver
             set;
         }
 
+        protected ICallable<String, QVoid> Message__
+        {
+            get;
+            set;
+        }
+
+        protected ICallable<IQArray<Qubit>, IQArray<Result>> Microsoft__Quantum__Measurement__MultiM
+        {
+            get;
+            set;
+        }
+
         protected ICallable<IQArray<Qubit>, QVoid> ResetAll__
         {
             get;
@@ -791,17 +803,21 @@ namespace Least.Squares.Solver
                     displayMatrix__.Apply((Aoriginal, "Original A"));
 #line 196 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     displayMatrix__.Apply((A, "Hermitian A"));
+#line 198 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                    var t = 1D;
 #line hidden
                     {
-#line 198 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 200 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         var c = Allocate__.Apply(10L);
 #line hidden
                         bool __arg2__ = true;
                         try
                         {
-#line 199 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                            QCR__.Apply((b, c, U_f__.Partial(new Func<IQArray<Qubit>, (IQArray<IQArray<Double>>,Double,IQArray<Qubit>)>((__arg3__) => (A, 1D, __arg3__)))));
+#line 201 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                            QCR__.Apply((b, c, U_f__.Partial(new Func<IQArray<Qubit>, (IQArray<IQArray<Double>>,Double,IQArray<Qubit>)>((__arg3__) => (A, t, __arg3__)))));
 #line 202 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                            Message__.Apply(String.Format("{0}, {1}", Microsoft__Quantum__Measurement__MultiM.Apply(b), Microsoft__Quantum__Measurement__MultiM.Apply(c)));
+#line 204 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                             ResetAll__.Apply(b);
                         }
 #line hidden
@@ -858,6 +874,8 @@ namespace Least.Squares.Solver
             this.displayMatrix__ = this.__Factory__.Get<ICallable<(IQArray<IQArray<Double>>,String), QVoid>>(typeof(displayMatrix));
             this.QCR__ = this.__Factory__.Get<ICallable<(IQArray<Qubit>,IQArray<Qubit>,IControllable), QVoid>>(typeof(QCR));
             this.U_f__ = this.__Factory__.Get<IControllable<(IQArray<IQArray<Double>>,Double,IQArray<Qubit>)>>(typeof(U_f));
+            this.Message__ = this.__Factory__.Get<ICallable<String, QVoid>>(typeof(global::Microsoft.Quantum.Intrinsic.Message));
+            this.Microsoft__Quantum__Measurement__MultiM = this.__Factory__.Get<ICallable<IQArray<Qubit>, IQArray<Result>>>(typeof(global::Microsoft.Quantum.Measurement.MultiM));
             this.ResetAll__ = this.__Factory__.Get<ICallable<IQArray<Qubit>, QVoid>>(typeof(global::Microsoft.Quantum.Intrinsic.ResetAll));
         }
 
