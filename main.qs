@@ -57,7 +57,7 @@ namespace Least.Squares.Solver {
     }
 
 
-    function displayMatrix(inputMatrix : Double[][], name : String) : Unit {
+    function displayMatrixD(inputMatrix : Double[][], name : String) : Unit {
         let matrix = transpose(inputMatrix);
         mutable o = name;
 
@@ -78,6 +78,7 @@ namespace Least.Squares.Solver {
         }
         Message(o);
     }
+    
 
 
     function transpose(matrix : Double[][]) : Double[][] {
@@ -149,11 +150,12 @@ namespace Least.Squares.Solver {
         mutable eiAt = [[], size = 0];
         for row in A {
             mutable payload = [Complex(0.0, 0.0), size = 0];
-            for i in row {
-                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, t * i))];
+            for element in row {
+                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, t * element))];
             }
             set eiAt += [payload];
         }
+        Message($"Unitary: {eiAt}");
         ApplyUnitary(eiAt, LittleEndian(qubits));
     }
 
@@ -167,6 +169,7 @@ namespace Least.Squares.Solver {
             }
             set eiAt += [payload];
         }
+        Message($"Inverse: {eiAt}");
         ApplyUnitary(eiAt, LittleEndian(qubits));
     }
 
@@ -203,39 +206,20 @@ namespace Least.Squares.Solver {
         
         let inputMatrixFormsDirectly = true;
         
-
         let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
-        let Aoriginal = prepareOriginalMatrixA(data, widthA);
-        
-
         //State Preperation (Need to define variables outside of scope of repeat loop)
-        if not inputMatrixFormsDirectly {displayMatrix(Aoriginal, "Original A");}
+        let Aoriginal = prepareOriginalMatrixA(data, widthA);
+        if not inputMatrixFormsDirectly {displayMatrixD(Aoriginal, "Original A");}
         
 
         let directInput_A = [[1., -1. / 3.], [-1. / 3., 1.]];
         let directInput_bInput = [0., 1.];
         let directInput_bLength = 1;
-
+        
         let A = inputMatrixFormsDirectly ? directInput_A | convertAtoHermitian(Aoriginal);
-        displayMatrix(A, "A");
-
-        use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
-
-        if not inputMatrixFormsDirectly {
-            prepareStateB(data, b);
-        }
-        else {
-            PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));
-            DumpMachine();
-        }
-        
-        
-
-        //(For QPE)
-        use c = Qubit[10];
-        use ancilla = Qubit();
+        displayMatrixD(A, "A");
 
         let t = 3. * PI() / 4.;
 
@@ -243,48 +227,70 @@ namespace Least.Squares.Solver {
         mutable dontRepeatComputation = false;
         mutable repitionCount = 0;
         repeat {
-            //State Prep Continued
-            if not inputMatrixFormsDirectly {
-                prepareStateB(data, b);
-            }
-            else {
-                PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));
-            }   
-            //DumpMachine();
-
+            
+            //State Prep
+            use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
+            use c = Qubit[2];
+            use ancilla = Qubit();
+            Message("\nOriginal b (|0>)");
+            DumpRegister((), b);
+            if not inputMatrixFormsDirectly {prepareStateB(data, b);}
+            else {PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));}
+            Message("\nPrepare b (|1>)");
+            DumpRegister((), b);
 
             //QPE
             //QPE State Prep
             ApplyToEach(H, c);
 
             //QPE Application of U
-            QCR(b, c, U_f(A, t, _)); //Im slightly unsure of the naming if this should actually be called QCR. It should work though
+            for i in 0 .. Length(c) - 1 {
+                Controlled U_f([c[i]], (A, t * IntAsDouble(2 ^ (i + 1)), b));
+            }
+
+            Message("\nb after QPE");
+            DumpRegister((), b);
+
+            Message("\nc after QPE");
+            DumpRegister((), c);
 
             Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
+
+            Message("\nc after QFT");
+            DumpRegister((), c);
 
             //QPE Controlled Rotation
             ancillaRotations(c, ancilla);
 
+            Message("\nAncilla after Rotation");
+            DumpRegister((), [ancilla]);
+
+            //Ancilla Measurement
             set dontRepeatComputation = M(ancilla) == One;
-            if not dontRepeatComputation {
-                ResetAll(b + c);
-            }
             Message($"Ancilla measured to be " + (dontRepeatComputation ? "One. Continuing..." | "Zero Repeating..."));
             set repitionCount += 1;
+
+            if dontRepeatComputation {
+                //Continuing the Algorithm
+                //QPE IQPE
+                QFT(LittleEndianAsBigEndian(LittleEndian(c)));
+                for i in 0 .. Length(c) - 1 {
+                    Controlled U_f_inverse([c[i]], (A, t * IntAsDouble(2 ^ (i + 1)), b));
+                }
+                ApplyToEach(H, c);
+
+                //Final Measureement
+                DumpRegister((), b);
+                Message($"Output: {MultiM(b)}");
+
+                //Reset
+                ResetAll(c);
+            }
+            else {
+                ResetAll(b + c);
+            }
         }
-        until dontRepeatComputation or repitionCount > 100;
-        if repitionCount > 100 {Message("Computation Failed: Ancilla never measured to be One");}
-
-        //QPE IQPE
-        QFT(LittleEndianAsBigEndian(LittleEndian(c)));
-        QCR(b, c, U_f_inverse(A, t, _));
-        ApplyToEach(H, c);
-
-        //Reset
-        ResetAll(c);
-
-        //Final Measureement
-        DumpRegister((), b);
-        Message($"Output: {MultiM(b)}");
+        until dontRepeatComputation or repitionCount > 10;
+        if repitionCount > 10 {Message("Computation Failed: Ancilla never measured to be One");}
     }
 }
