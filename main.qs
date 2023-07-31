@@ -171,7 +171,7 @@ namespace Least.Squares.Solver {
     }
 
 
-    operation QCR(b : Qubit[], c : Qubit[], U : (Qubit[] => Unit is Ctl)) : Unit {
+    operation QCR(b : Qubit[], c : Qubit[], U : (Qubit[] => Unit is Ctl)) : Unit{
         for controlQubit in c {
             Controlled U([controlQubit], b);
         }
@@ -182,25 +182,76 @@ namespace Least.Squares.Solver {
     @EntryPoint()
     operation MainOp() : Unit {
 
+        //Major Steps:
+            //State Prep
+            //QPE
+                //State Prep (ApplyToEach(H, Controls))
+                //Application of U
+                //IQFT
+            //Controlled Ry onto Ancilla
+            //Measure Ancilla (If 1, continue. If 0, restart)
+            //IQPE
+            //Measure b register to find x
+
+
+        //Inputs
         let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
 
+
+        //State Preperation (Need to define variables outside of scope of repeat loop)
         use b = Qubit[Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
-        prepareStateB(data, b);    
-        DumpMachine();
-        
+
         let Aoriginal = prepareOriginalMatrixA(data, widthA);
         let A = convertAtoHermitian(Aoriginal);
         
         displayMatrix(Aoriginal, "Original A");
         displayMatrix(A, "Hermitian A");
 
-        let t = 1.;
-        
+        //(For QPE)
         use c = Qubit[10];
-        QCR(b, c, U_f(A, t, _));
-        Message($"{MultiM(b)}, {MultiM(c)}");
+        use ancilla = Qubit();
 
-        ResetAll(b);
+        let t = 1.;
+            
+
+        //HHL Algorithm
+        mutable dontRepeatComputation = false;
+        repeat {
+            //State Prep Continued
+            prepareStateB(data, b);    
+            //DumpMachine();
+
+
+            //QPE
+            //QPE State Prep
+            ApplyToEach(H, c);
+
+            //QPE Application of U
+            QCR(b, c, U_f(A, t, _)); //Im slightly unsure of the naming if this should actually be called QCR. It should work though
+
+            Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
+
+            //QPE Controlled Rotation
+            H(ancilla); //THIS LINE IS ONLY FOR TESTING. Tony is currently working on this part
+            set dontRepeatComputation = M(ancilla) == One;
+
+            if not dontRepeatComputation {
+                ResetAll(b + c);
+            }
+        }
+        until dontRepeatComputation;
+
+        //QPE IQPE
+        QFT(LittleEndianAsBigEndian(LittleEndian(c)));
+        QCR(b, c, U_f_inverse(A, t, _));
+        ApplyToEach(H, c);
+
+        //Final Measureement
+        Message($"Output: {MultiM(b)}");
+
+        //Reset
+        ResetAll(c);
+
     }
 }
