@@ -12,6 +12,8 @@ namespace Least.Squares.Solver {
     open Microsoft.Quantum.Synthesis;
     open Microsoft.Quantum.Preparation;
 
+    
+
 
 
     //Prep (DONE)
@@ -80,7 +82,6 @@ namespace Least.Squares.Solver {
     }
     
 
-
     function transpose(matrix : Double[][]) : Double[][] {
         mutable o = [[0.], size=0];
         for i in 0 .. Length(matrix[0]) - 1 {
@@ -103,6 +104,132 @@ namespace Least.Squares.Solver {
         }
         return o;
     }
+
+
+    function matMulD(m1 : Double[][], m2 : Double[][]) : Double[][] {
+        if Length(m1) != Length(m2[0]) {Message("ERROR! Incompatable Matrices in matMul");}
+
+        //ONLY WORKS ON SQUARE MATRICES
+
+        mutable o = [[0.], size=0];
+        for column in 0 .. Length(m1) - 1 {
+            mutable columnTemp = [0., size=0];
+            for row in 0 .. Length(m1[column]) - 1 {
+                mutable sum = 0.;
+                for i in 0 .. Length(m1) - 1 {=
+                    set sum += (m1[i][row]) * (m2[column][i]);
+                }
+                set columnTemp += [sum];
+            }
+            set o += [columnTemp];
+        }
+        return o;
+    }
+    function matMulC(m1 : Complex[][], m2 : Complex[][]) : Complex[][] {
+        if Length(m1) != Length(m2[0]) {Message("ERROR! Incompatable Matrices in matMul");}
+
+        //ONLY WORKS ON SQUARE MATRICES
+
+        mutable o = [[Complex(0., 0.)], size=0];
+        for column in 0 .. Length(m1) - 1 {
+            mutable columnTemp = [Complex(0., 0.), size=0];
+            for row in 0 .. Length(m1[column]) - 1 {
+                mutable sum = Complex(0., 0.);
+                for i in 0 .. Length(m1) - 1 {
+                    set sum = PlusC(sum, TimesC(m1[i][row], m2[column][i]));
+                }
+                set columnTemp += [sum];
+            }
+            set o += [columnTemp];
+        }
+        return o;
+    }
+
+
+    function scalarMatMulC(m1 : Double[][], scalar : Complex) : Complex[][] {
+        mutable o = [[Complex(0., 0.)], size=0];
+        for i in 0 .. Length(m1) - 1 {
+            mutable temp = [Complex(0., 0.), size=0];
+            for j in 0 .. Length(m1[i]) - 1 {
+                set temp += [TimesC(scalar, Complex(m1[i][j], 0.))];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+
+
+    function AddMatC(m1 : Complex[][], m2 : Complex[][]) : Complex[][] {
+        mutable o = [[Complex(0., 0.)], size=0];
+        for i in 0 .. Length(m1) - 1 {
+            mutable temp = [Complex(0., 0.), size=0];
+            for j in 0 .. Length(m1[i]) - 1 {
+                set temp += [PlusC(m1[i][j], m2[i][j])];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+
+
+    function isMatrixEqual (m1 : Double[][], m2 : Double[][]) : Bool {
+        if Length(m1) != Length(m2) or Length(m1[0]) != Length(m2[0]) {return false;}
+        for i in 0 .. Length(m1) - 1 {
+            for j in 0 .. Length(m1[i]) - 1 {
+                if m1[i][j] != m2[i][j] {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function doubleMatrixToComplex(m : Double[][]) : Complex[][] {
+        mutable o = [[Complex(0., 0.)], size=0];
+        for i in 0 .. Length(m) - 1 {
+            mutable temp = [Complex(0., 0.), size=0];
+            for j in 0 .. Length(m[i]) - 1 {
+                set temp += [Complex(m[i][j], 0.)];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+
+    function IdentityI(size : Int) : Int[][] {
+        mutable o = [[0], size=0];
+        for i in 0 .. size - 1 {
+            mutable temp = [0, size=0];
+            for j in 0 .. size - 1 {
+                set temp += [i == j ? 1 | 0];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+    function IdentityD(size : Int) : Double[][] {
+        mutable o = [[0.], size=0];
+        for i in 0 .. size - 1 {
+            mutable temp = [0., size=0];
+            for j in 0 .. size - 1 {
+                set temp += [i == j ? 1. | 0.];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+    function IdentityC(size : Int) : Complex[][] {
+        mutable o = [[Complex(0., 0.)], size=0];
+        for i in 0 .. size - 1 {
+            mutable temp = [Complex(0., 0.), size=0];
+            for j in 0 .. size - 1 {
+                set temp += [i == j ? Complex(1., 0.) | Complex(0., 0.)];
+            }
+            set o += [temp];
+        }
+        return o;
+    }
+
 
 
     function prepareOriginalMatrixA (data : Double[][], width : Int) : Double[][] {
@@ -144,41 +271,25 @@ namespace Least.Squares.Solver {
         }
         return o;
     }
-    
 
-    operation U_f(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
-        mutable eiAt = [[], size = 0];
-        for row in A {
-            mutable payload = [Complex(0.0, 0.0), size = 0];
-            for element in row {
-                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, t * element))];
+
+    operation U(A : Double[][], t : Double, qubits : Qubit[]) : Unit {
+        //Inverse can be taken by setting t to be negative
+        //Powers can be taken by multiplying t
+        
+        let iterations = 10;
+        mutable sum = IdentityC(Length(A));
+        for i in 1 .. iterations {
+            let s = Complex((t ^ IntAsDouble(i)) * ((i % 4) <= 1 ? -1. | 1.) * IntAsDouble(FactorialI(i)), i % 2 == 1 ? 1. | 0.);
+            mutable m = IdentityC(Length(A));
+            for _ in 1 .. i {
+                set m = matMulC(m, doubleMatrixToComplex(A));
             }
-            set eiAt += [payload];
+            set sum = AddMatC(sum, m);
         }
-        Message($"Unitary: {eiAt}");
-        ApplyUnitary(eiAt, LittleEndian(qubits));
+        return ApplyUnitary(sum, LittleEndian(qubits));
     }
 
-
-    operation U_f_inverse(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
-        mutable eiAt = [[], size = 0];
-        for row in A {
-            mutable payload = [Complex(0.0, 0.0), size = 0];
-            for i in row {
-                set payload += [PowC(Complex(E(), 0.0), Complex(0.0, t * -i))];
-            }
-            set eiAt += [payload];
-        }
-        Message($"Inverse: {eiAt}");
-        ApplyUnitary(eiAt, LittleEndian(qubits));
-    }
-
-
-    operation QCR(b : Qubit[], c : Qubit[], U : (Qubit[] => Unit is Ctl)) : Unit{
-        for controlQubit in c {
-            Controlled U([controlQubit], b);
-        }
-    }
 
     operation ancillaRotations(c : Qubit[], a : Qubit) : Unit {
         for i in 0 .. Length(c) - 1 {
@@ -186,9 +297,11 @@ namespace Least.Squares.Solver {
         }
     }
 
+    
 
     @EntryPoint()
     operation MainOp() : Unit {
+
 
         //Major Steps:
             //State Prep
