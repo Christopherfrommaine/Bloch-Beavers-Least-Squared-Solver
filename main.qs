@@ -116,7 +116,7 @@ namespace Least.Squares.Solver {
             mutable columnTemp = [0., size=0];
             for row in 0 .. Length(m1[column]) - 1 {
                 mutable sum = 0.;
-                for i in 0 .. Length(m1) - 1 {=
+                for i in 0 .. Length(m1) - 1 {
                     set sum += (m1[i][row]) * (m2[column][i]);
                 }
                 set columnTemp += [sum];
@@ -273,7 +273,7 @@ namespace Least.Squares.Solver {
     }
 
 
-    operation U(A : Double[][], t : Double, qubits : Qubit[]) : Unit {
+    operation U(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
         //Inverse can be taken by setting t to be negative
         //Powers can be taken by multiplying t
         
@@ -358,7 +358,7 @@ namespace Least.Squares.Solver {
 
             //QPE Application of U
             for i in 0 .. Length(c) - 1 {
-                Controlled U_f([c[i]], (A, t * IntAsDouble(2 ^ (i + 1)), b));
+                Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i + 1)), b));
             }
 
             Message("\nb after QPE");
@@ -388,7 +388,7 @@ namespace Least.Squares.Solver {
                 //QPE IQPE
                 QFT(LittleEndianAsBigEndian(LittleEndian(c)));
                 for i in 0 .. Length(c) - 1 {
-                    Controlled U_f_inverse([c[i]], (A, t * IntAsDouble(2 ^ (i + 1)), b));
+                    Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i + 1)), b));
                 }
                 ApplyToEach(H, c);
 
