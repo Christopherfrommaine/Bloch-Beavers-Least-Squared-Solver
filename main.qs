@@ -177,6 +177,11 @@ namespace Least.Squares.Solver {
         }
     }
 
+    operation ancillaRotations(c : Qubit[], a : Qubit) : Unit {
+        for i in 0 .. Length(c) - 1 {
+            Controlled Ry([c[i]], (2. * ArcCos(1. / (IntAsDouble(i) + 1.)), a));
+        }
+    }
 
 
     @EntryPoint()
