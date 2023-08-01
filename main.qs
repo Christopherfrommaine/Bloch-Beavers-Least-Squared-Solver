@@ -146,12 +146,12 @@ namespace Least.Squares.Solver {
     }
 
 
-    function scalarMatMulC(m1 : Double[][], scalar : Complex) : Complex[][] {
+    function scalarMatMulC(m1 : Complex[][], scalar : Complex) : Complex[][] {
         mutable o = [[Complex(0., 0.)], size=0];
         for i in 0 .. Length(m1) - 1 {
             mutable temp = [Complex(0., 0.), size=0];
             for j in 0 .. Length(m1[i]) - 1 {
-                set temp += [TimesC(scalar, Complex(m1[i][j], 0.))];
+                set temp += [TimesC(scalar, m1[i][j])];
             }
             set o += [temp];
         }
@@ -274,20 +274,40 @@ namespace Least.Squares.Solver {
 
 
     operation U(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
-        //Inverse can be taken by setting t to be negative
+        //Inverse can be taken by setting t to be negativec
         //Powers can be taken by multiplying t
         
         let iterations = 10;
-        mutable sum = IdentityC(Length(A));
-        for i in 1 .. iterations {
-            let s = Complex((t ^ IntAsDouble(i)) * ((i % 4) <= 1 ? -1. | 1.) * IntAsDouble(FactorialI(i)), i % 2 == 1 ? 1. | 0.);
+        mutable sum = [[Complex(0., 0.), Complex(0., 0.)], [Complex(0., 0.), Complex(0., 0.)]];
+        for i in 0 .. iterations {
+            let magnitude = (t ^ IntAsDouble(i)) * ((i % 4) == 2 or (i % 4) == 3 ? -1. | 1.) * IntAsDouble(FactorialI(i));
+            let s = i % 2 == 1 ? Complex(0., magnitude) | Complex(magnitude, 0.);
             mutable m = IdentityC(Length(A));
             for _ in 1 .. i {
                 set m = matMulC(m, doubleMatrixToComplex(A));
             }
+            set m = scalarMatMulC(m, s);
+            Message($"Term {i}: {m}");
             set sum = AddMatC(sum, m);
         }
-        return ApplyUnitary(sum, LittleEndian(qubits));
+        Message($"Raw Matrix Form of U: {sum}");
+        mutable normFactor = 0.;
+        for i in sum {
+            for j in i {
+                set normFactor += AbsComplex(j) ^ 2.;
+            }
+        }
+        set normFactor = 1. / Sqrt(normFactor);
+        mutable o = [[Complex(0., 0.)], size=0];
+        for i in sum {
+            mutable temp = [Complex(0., 0.), size=0];
+            for j in i {
+                set temp += [TimesC(j, Complex(normFactor, 0.))];
+            }
+            set o += [temp];
+        }
+        Message($"Normalized Matrix Form of U: {o} \nInputs | t: {t}, A: {A}");
+        ApplyUnitary(o, LittleEndian(qubits));
     }
 
 
@@ -301,7 +321,8 @@ namespace Least.Squares.Solver {
 
     @EntryPoint()
     operation MainOp() : Unit {
-
+        
+        Message("Starting HHL Algorithm \n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         //Major Steps:
             //State Prep
@@ -358,7 +379,7 @@ namespace Least.Squares.Solver {
 
             //QPE Application of U
             for i in 0 .. Length(c) - 1 {
-                Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i + 1)), b));
+                Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
             }
 
             Message("\nb after QPE");
