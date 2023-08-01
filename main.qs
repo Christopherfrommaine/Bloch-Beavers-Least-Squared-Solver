@@ -337,6 +337,10 @@ namespace Least.Squares.Solver {
         //Inputs
         
         let inputMatrixFormsDirectly = true;
+
+        let totalIterations = 1000;
+        mutable numIterationsTotal = 0;
+        mutable outcomes = [];
         
         let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
         let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
@@ -356,73 +360,107 @@ namespace Least.Squares.Solver {
         let t = 3. * PI() / 4.;
 
         //HHL Algorithm
-        mutable dontRepeatComputation = false;
-        mutable repitionCount = 0;
         repeat {
-            
-            //State Prep
-            use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
-            use c = Qubit[2];
-            use ancilla = Qubit();
-            Message("\nOriginal b (|0>)");
-            DumpRegister((), b);
-            if not inputMatrixFormsDirectly {prepareStateB(data, b);}
-            else {PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));}
-            Message("\nPrepare b (|1>)");
-            DumpRegister((), b);
+            set numIterationsTotal += 1;
+            mutable dontRepeatComputation = false;
+            mutable repitionCount = 0;
+            repeat {
+                
+                //State Prep
+                use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
+                use c = Qubit[2];
+                use ancilla = Qubit();
+                Message("\nOriginal b (|0>)");
+                DumpRegister((), b);
+                if not inputMatrixFormsDirectly {prepareStateB(data, b);}
+                else {PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));}
+                Message("\nPrepare b (|1>)");
+                DumpRegister((), b);
 
-            //QPE
-            //QPE State Prep
-            ApplyToEach(H, c);
-
-            //QPE Application of U
-            for i in 0 .. Length(c) - 1 {
-                Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
-            }
-
-            Message("\nb after QPE");
-            DumpRegister((), b);
-
-            Message("\nc after QPE");
-            DumpRegister((), c);
-
-            Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
-
-            Message("\nc after QFT");
-            DumpRegister((), c);
-
-            //QPE Controlled Rotation
-            ancillaRotations(c, ancilla);
-
-            Message("\nAncilla after Rotation");
-            DumpRegister((), [ancilla]);
-
-            //Ancilla Measurement
-            set dontRepeatComputation = M(ancilla) == One;
-            Message($"Ancilla measured to be " + (dontRepeatComputation ? "One. Continuing..." | "Zero Repeating..."));
-            set repitionCount += 1;
-
-            if dontRepeatComputation {
-                //Continuing the Algorithm
-                //QPE IQPE
-                QFT(LittleEndianAsBigEndian(LittleEndian(c)));
-                for i in 0 .. Length(c) - 1 {
-                    Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i + 1)), b));
-                }
+                //QPE
+                //QPE State Prep
                 ApplyToEach(H, c);
 
-                //Final Measureement
-                DumpRegister((), b);
-                Message($"Output: {MultiM(b)}");
+                //QPE Application of U
+                for i in 0 .. Length(c) - 1 {
+                    Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
+                }
 
-                //Reset
-                ResetAll(c);
+                Message("\nb after QPE");
+                DumpRegister((), b);
+
+                Message("\nc after QPE");
+                DumpRegister((), c);
+
+                Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
+
+                Message("\nc after QFT");
+                DumpRegister((), c);
+
+                //QPE Controlled Rotation
+                ancillaRotations(c, ancilla);
+
+                Message("\nAncilla after Rotation");
+                DumpRegister((), [ancilla]);
+
+                //Ancilla Measurement
+                set dontRepeatComputation = M(ancilla) == One;
+                Message($"Ancilla measured to be " + (dontRepeatComputation ? "One. Continuing..." | "Zero Repeating..."));
+                set repitionCount += 1;
+
+                if dontRepeatComputation {
+                    //Continuing the Algorithm
+                    //QPE IQPE
+                    QFT(LittleEndianAsBigEndian(LittleEndian(c)));
+                    for i in 0 .. Length(c) - 1 {
+                        Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i + 1)), b));
+                    }
+                    ApplyToEach(H, c);
+
+                    //Final Measureement
+                    DumpRegister((), b);
+                    let output = MultiM(b);
+                    Message($"Output: {output}");
+                    set outcomes += [ResultArrayAsInt(output)];
+
+                    //Reset
+                    ResetAll(c);
+                }
+                else {
+                    ResetAll(b + c);
+                }
             }
-            else {
-                ResetAll(b + c);
+            until dontRepeatComputation; // or repitionCount > 10;
+            if repitionCount > 10 and false {
+                Message("Computation Failed: Ancilla never measured to be One");
+                fail "because why not";
             }
         }
-        until dontRepeatComputation or repitionCount > 10;
-        if repitionCount > 10 {Message("Computation Failed: Ancilla never measured to be One");}
+        until numIterationsTotal == totalIterations;
+
+        //Statistical Post-Processing
+        mutable outcomesFinal = [];
+        mutable maxIndex = 0;
+        for i in outcomes {if i > maxIndex {set maxIndex = i;}}
+
+        for i in 0 .. maxIndex {
+            mutable count = 0;
+            for j in outcomes {
+                if j == i {
+                    set count += 1;
+                }
+            }
+            set outcomesFinal += [count];
+        }
+
+
+
+        Message($"Outcomes: {outcomes}");
+        if outcomesFinal[0] < outcomesFinal[1] {
+            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {outcomesFinal[1] / outcomesFinal[0]}");
+        }
+        else {
+            Message($"\n--------\nOutput: {outcomesFinal} | {outcomesFinal[0] / outcomesFinal[1]} : 1");
+        }
     }
 }
