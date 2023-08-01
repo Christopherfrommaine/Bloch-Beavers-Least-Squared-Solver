@@ -345,7 +345,7 @@ namespace Least.Squares.Solver {
         
         let inputMatrixFormsDirectly = true;
 
-        let totalIterations = 100;
+        let totalIterations = 1;
         mutable numIterationsTotal = 0;
         mutable outcomes = [];
         
@@ -393,22 +393,19 @@ namespace Least.Squares.Solver {
                     Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
                 }
 
-                Message("\nb after QPE");
-                DumpRegister((), b);
-
-                Message("\nc after QPE");
-                DumpRegister((), c);
+                Message("After QPE");
+                DumpMachine();
 
                 Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
 
-                Message("\nc after QFT");
-                DumpRegister((), c);
+                Message("After QFT");
+                DumpMachine();
 
                 //QPE Controlled Rotation
                 ancillaRotations(c, ancilla);
 
-                Message("\nAncilla after Rotation");
-                DumpRegister((), [ancilla]);
+                Message("After Rotation");
+                DumpMachine();
 
                 //Ancilla Measurement
                 set dontRepeatComputation = M(ancilla) == One;
