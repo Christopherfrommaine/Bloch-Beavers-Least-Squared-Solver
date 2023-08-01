@@ -1445,13 +1445,7 @@ namespace Least.Squares.Solver
             set;
         }
 
-        protected IUnitary<Microsoft.Quantum.Arithmetic.BigEndian> Microsoft__Quantum__Canon__QFT
-        {
-            get;
-            set;
-        }
-
-        protected ICallable<Microsoft.Quantum.Arithmetic.LittleEndian, Microsoft.Quantum.Arithmetic.BigEndian> Microsoft__Quantum__Arithmetic__LittleEndianAsBigEndian
+        protected IUnitary<Microsoft.Quantum.Arithmetic.LittleEndian> Microsoft__Quantum__Canon__QFTLE
         {
             get;
             set;
@@ -1469,13 +1463,13 @@ namespace Least.Squares.Solver
             set;
         }
 
-        protected ICallable<IQArray<Qubit>, IQArray<Result>> Microsoft__Quantum__Measurement__MultiM
+        protected ICallable<IQArray<Result>, Int64> Microsoft__Quantum__Convert__ResultArrayAsInt
         {
             get;
             set;
         }
 
-        protected ICallable<IQArray<Result>, Int64> Microsoft__Quantum__Convert__ResultArrayAsInt
+        protected ICallable<IQArray<Qubit>, IQArray<Result>> Microsoft__Quantum__Measurement__MultiM
         {
             get;
             set;
@@ -1494,7 +1488,7 @@ namespace Least.Squares.Solver
 #line 346 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var inputMatrixFormsDirectly = true;
 #line 348 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-            var totalIterations = 1L;
+            var totalIterations = 1000L;
 #line 349 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var numIterationsTotal = 0L;
 #line 350 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
@@ -1527,192 +1521,153 @@ namespace Least.Squares.Solver
 #line 370 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             while (true)
             {
-#line 371 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                numIterationsTotal = (numIterationsTotal + 1L);
-#line 372 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                var dontRepeatComputation = false;
-#line 373 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                var repitionCount = 0L;
-#line 374 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                while (true)
+#line hidden
                 {
+#line 373 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                    var ancilla = Allocate__.Apply();
 #line hidden
+                    bool __arg1__ = true;
+                    try
                     {
-#line 377 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                        var b = Allocate__.Apply((inputMatrixFormsDirectly ? directInput_bLength : (Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(data.Length))) + 1L)));
 #line hidden
-                        bool __arg1__ = true;
-                        try
                         {
+#line 374 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                            var c = Allocate__.Apply(2L);
 #line hidden
+                            bool __arg2__ = true;
+                            try
                             {
-#line 378 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                var c = Allocate__.Apply(2L);
 #line hidden
-                                bool __arg2__ = true;
-                                try
                                 {
+#line 375 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                    var b = Allocate__.Apply((inputMatrixFormsDirectly ? directInput_bLength : (Microsoft__Quantum__Math__Ceiling.Apply(Microsoft__Quantum__Math__Lg.Apply(Microsoft__Quantum__Convert__IntAsDouble.Apply(data.Length))) + 1L)));
 #line hidden
+                                    bool __arg3__ = true;
+                                    try
                                     {
+#line 377 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Message__.Apply("\nOriginal b (|0>)");
+#line 378 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Microsoft__Quantum__Diagnostics__DumpRegister.Apply((QVoid.Instance, b));
 #line 379 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                        var ancilla = Allocate__.Apply();
-#line hidden
-                                        bool __arg3__ = true;
-                                        try
+                                        if (!(inputMatrixFormsDirectly))
+                                        {
+#line 379 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                            prepareStateB__.Apply((data, b));
+                                        }
+                                        else
                                         {
 #line 380 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Message__.Apply("\nOriginal b (|0>)");
+                                            Microsoft__Quantum__Preparation__PrepareArbitraryStateD.Apply((directInput_bInput, new Microsoft.Quantum.Arithmetic.LittleEndian(b)));
+                                        }
+
 #line 381 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Diagnostics__DumpRegister.Apply((QVoid.Instance, b));
+                                        Message__.Apply("\nPrepare b (|1>)");
 #line 382 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            if (!(inputMatrixFormsDirectly))
-                                            {
-#line 382 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                prepareStateB__.Apply((data, b));
-                                            }
-                                            else
-                                            {
-#line 383 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                Microsoft__Quantum__Preparation__PrepareArbitraryStateD.Apply((directInput_bInput, new Microsoft.Quantum.Arithmetic.LittleEndian(b)));
-                                            }
-
-#line 384 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Message__.Apply("\nPrepare b (|1>)");
-#line 385 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Diagnostics__DumpRegister.Apply((QVoid.Instance, b));
+                                        Microsoft__Quantum__Diagnostics__DumpRegister.Apply((QVoid.Instance, b));
+#line 386 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Microsoft__Quantum__Canon__ApplyToEach.Apply((Microsoft__Quantum__Intrinsic__H, c));
 #line 389 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Canon__ApplyToEach.Apply((Microsoft__Quantum__Intrinsic__H, c));
-#line 392 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            foreach (var i in new QRange(0L, (c.Length - 1L)))
+                                        foreach (var i in new QRange((c.Length - 1L), -(1L), 0L))
 #line hidden
-                                            {
-#line 393 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                U__.Controlled.Apply((new QArray<Qubit>(c[i]), (A, (t * Microsoft__Quantum__Convert__IntAsDouble.Apply(2L.Pow(i))), b)));
-                                            }
+                                        {
+#line 390 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                            U__.Controlled.Apply((new QArray<Qubit>(c[i]), (A, (t * Microsoft__Quantum__Convert__IntAsDouble.Apply(2L.Pow(i))), b)));
+                                        }
 
+#line 393 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Message__.Apply("After QPE");
+#line 394 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
 #line 396 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Message__.Apply("After QPE");
-#line 397 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
+                                        Microsoft__Quantum__Canon__QFTLE.Adjoint.Apply(new Microsoft.Quantum.Arithmetic.LittleEndian(c));
+#line 398 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Message__.Apply("After QFT");
 #line 399 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Canon__QFT.Adjoint.Apply(Microsoft__Quantum__Arithmetic__LittleEndianAsBigEndian.Apply(new Microsoft.Quantum.Arithmetic.LittleEndian(c)));
-#line 401 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Message__.Apply("After QFT");
+                                        Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
 #line 402 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
+                                        ancillaRotations__.Apply((c, ancilla));
+#line 404 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Message__.Apply("After Rotation");
 #line 405 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            ancillaRotations__.Apply((c, ancilla));
-#line 407 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Message__.Apply("After Rotation");
-#line 408 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
-#line 411 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            dontRepeatComputation = (Microsoft__Quantum__Intrinsic__M.Apply(ancilla) == Result.One);
-#line 412 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            Message__.Apply(("Ancilla measured to be " + (dontRepeatComputation ? "One. Continuing..." : "Zero Repeating...")));
-#line 413 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            repitionCount = (repitionCount + 1L);
-#line 415 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                            if (dontRepeatComputation)
-                                            {
-#line 418 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                Microsoft__Quantum__Canon__QFT.Apply(Microsoft__Quantum__Arithmetic__LittleEndianAsBigEndian.Apply(new Microsoft.Quantum.Arithmetic.LittleEndian(c)));
-#line 419 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                foreach (var i in new QRange(0L, (c.Length - 1L)))
+                                        Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
+#line 409 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Microsoft__Quantum__Canon__QFTLE.Apply(new Microsoft.Quantum.Arithmetic.LittleEndian(c));
+#line 410 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        foreach (var i in new QRange((c.Length - 1L), -(1L), 0L))
 #line hidden
-                                                {
+                                        {
+#line 411 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                            U__.Controlled.Apply((new QArray<Qubit>(c[i]), (A, ((-(1D) * t) * Microsoft__Quantum__Convert__IntAsDouble.Apply(2L.Pow(i))), b)));
+                                        }
+
+#line 413 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Microsoft__Quantum__Canon__ApplyToEach.Apply((Microsoft__Quantum__Intrinsic__H, c));
+#line 415 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Message__.Apply("Final State:");
+#line 416 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
+#line 418 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                        if ((Microsoft__Quantum__Intrinsic__M.Apply(ancilla) == Result.Zero))
+                                        {
+#line 419 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+                                            outcomes = QArray<Int64>.Add(outcomes, new QArray<Int64>(Microsoft__Quantum__Convert__ResultArrayAsInt.Apply(Microsoft__Quantum__Measurement__MultiM.Apply(b))));
 #line 420 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                    U__.Controlled.Apply((new QArray<Qubit>(c[i]), (A, ((-(1D) * t) * Microsoft__Quantum__Convert__IntAsDouble.Apply(2L.Pow(i))), b)));
-                                                }
+                                            numIterationsTotal = (numIterationsTotal + 1L);
+                                        }
 
 #line 422 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                Microsoft__Quantum__Canon__ApplyToEach.Apply((Microsoft__Quantum__Intrinsic__H, c));
-#line 425 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                Microsoft__Quantum__Diagnostics__DumpRegister.Apply((QVoid.Instance, b));
-#line 426 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                Microsoft__Quantum__Diagnostics__DumpMachine.Apply(QVoid.Instance);
-#line 427 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                var output = (IQArray<Result>)Microsoft__Quantum__Measurement__MultiM.Apply(b);
-#line 428 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                Message__.Apply(String.Format("Output: {0}", output));
-#line 429 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                outcomes = QArray<Int64>.Add(outcomes, new QArray<Int64>(Microsoft__Quantum__Convert__ResultArrayAsInt.Apply(output)));
-#line 432 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                ResetAll__.Apply(c);
-                                            }
-                                            else
-                                            {
-#line 435 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                                                ResetAll__.Apply(QArray<Qubit>.Add(b, c));
-                                            }
-                                        }
-#line hidden
-                                        catch
-                                        {
-                                            __arg3__ = false;
-                                            throw;
-                                        }
-#line hidden
-                                        finally
-                                        {
-                                            if (__arg3__)
-                                            {
-#line hidden
-                                                Release__.Apply(ancilla);
-                                            }
-                                        }
+                                        ResetAll__.Apply(QArray<Qubit>.Add(QArray<Qubit>.Add(new QArray<Qubit>(ancilla), b), c));
                                     }
-                                }
 #line hidden
-                                catch
-                                {
-                                    __arg2__ = false;
-                                    throw;
-                                }
-#line hidden
-                                finally
-                                {
-                                    if (__arg2__)
+                                    catch
                                     {
+                                        __arg3__ = false;
+                                        throw;
+                                    }
 #line hidden
-                                        Release__.Apply(c);
+                                    finally
+                                    {
+                                        if (__arg3__)
+                                        {
+#line hidden
+                                            Release__.Apply(b);
+                                        }
                                     }
                                 }
                             }
-                        }
 #line hidden
-                        catch
-                        {
-                            __arg1__ = false;
-                            throw;
-                        }
-#line hidden
-                        finally
-                        {
-                            if (__arg1__)
+                            catch
                             {
+                                __arg2__ = false;
+                                throw;
+                            }
 #line hidden
-                                Release__.Apply(b);
+                            finally
+                            {
+                                if (__arg2__)
+                                {
+#line hidden
+                                    Release__.Apply(c);
+                                }
                             }
                         }
                     }
-
-                    if (dontRepeatComputation)
+#line hidden
+                    catch
                     {
-                        break;
+                        __arg1__ = false;
+                        throw;
                     }
-                    else
+#line hidden
+                    finally
                     {
+                        if (__arg1__)
+                        {
+#line hidden
+                            Release__.Apply(ancilla);
+                        }
                     }
-                }
-
-#line 439 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                if (((repitionCount > 10L) && false))
-                {
-#line 440 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                    Message__.Apply("Computation Failed: Ancilla never measured to be One");
-#line 441 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
-                    throw new ExecutionFailException("because why not");
                 }
 
                 if ((numIterationsTotal == totalIterations))
@@ -1724,55 +1679,55 @@ namespace Least.Squares.Solver
                 }
             }
 
-#line 447 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 427 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var outcomesFinal = new QArray<Int64>();
-#line 448 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 428 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             var maxIndex = 1L;
-#line 449 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 429 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var i in outcomes?.Copy())
 #line hidden
             {
-#line 449 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 429 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 if ((i > maxIndex))
                 {
-#line 449 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 429 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     maxIndex = i;
                 }
             }
 
-#line 451 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 431 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             foreach (var i in new QRange(0L, maxIndex))
 #line hidden
             {
-#line 452 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 432 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 var count = 0L;
-#line 453 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 433 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 foreach (var j in outcomes?.Copy())
 #line hidden
                 {
-#line 454 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 434 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                     if ((j == i))
                     {
-#line 455 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 435 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                         count = (count + 1L);
                     }
                 }
 
-#line 458 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 438 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 outcomesFinal = QArray<Int64>.Add(outcomesFinal, new QArray<Int64>(count));
             }
 
-#line 463 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 443 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             Message__.Apply(String.Format("Outcomes: {0}", outcomes));
-#line 464 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 444 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
             if ((outcomesFinal[0L] < outcomesFinal[1L]))
             {
-#line 465 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 445 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 Message__.Apply(String.Format("\n--------\nOutput: {0} | 1 : {1}", outcomesFinal, (Microsoft__Quantum__Convert__IntAsDouble.Apply(outcomesFinal[1L]) / Microsoft__Quantum__Convert__IntAsDouble.Apply(outcomesFinal[0L]))));
             }
             else
             {
-#line 468 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
+#line 448 "C:\\Users\\chris\\Git-Repos\\LSS Clone\\Bloch-Beavers-Least-Squared-Solver\\main.qs"
                 Message__.Apply(String.Format("\n--------\nOutput: {0} | {1} : 1", outcomesFinal, (Microsoft__Quantum__Convert__IntAsDouble.Apply(outcomesFinal[0L]) / Microsoft__Quantum__Convert__IntAsDouble.Apply(outcomesFinal[1L]))));
             }
 
@@ -1802,12 +1757,11 @@ namespace Least.Squares.Solver
             this.Microsoft__Quantum__Intrinsic__H = this.__Factory__.Get<IUnitary<Qubit>>(typeof(global::Microsoft.Quantum.Intrinsic.H));
             this.U__ = this.__Factory__.Get<IControllable<(IQArray<IQArray<Double>>,Double,IQArray<Qubit>)>>(typeof(U));
             this.Microsoft__Quantum__Diagnostics__DumpMachine = this.__Factory__.Get<ICallable>(typeof(global::Microsoft.Quantum.Diagnostics.DumpMachine<>));
-            this.Microsoft__Quantum__Canon__QFT = this.__Factory__.Get<IUnitary<Microsoft.Quantum.Arithmetic.BigEndian>>(typeof(global::Microsoft.Quantum.Canon.QFT));
-            this.Microsoft__Quantum__Arithmetic__LittleEndianAsBigEndian = this.__Factory__.Get<ICallable<Microsoft.Quantum.Arithmetic.LittleEndian, Microsoft.Quantum.Arithmetic.BigEndian>>(typeof(global::Microsoft.Quantum.Arithmetic.LittleEndianAsBigEndian));
+            this.Microsoft__Quantum__Canon__QFTLE = this.__Factory__.Get<IUnitary<Microsoft.Quantum.Arithmetic.LittleEndian>>(typeof(global::Microsoft.Quantum.Canon.QFTLE));
             this.ancillaRotations__ = this.__Factory__.Get<ICallable<(IQArray<Qubit>,Qubit), QVoid>>(typeof(ancillaRotations));
             this.Microsoft__Quantum__Intrinsic__M = this.__Factory__.Get<ICallable<Qubit, Result>>(typeof(global::Microsoft.Quantum.Intrinsic.M));
-            this.Microsoft__Quantum__Measurement__MultiM = this.__Factory__.Get<ICallable<IQArray<Qubit>, IQArray<Result>>>(typeof(global::Microsoft.Quantum.Measurement.MultiM));
             this.Microsoft__Quantum__Convert__ResultArrayAsInt = this.__Factory__.Get<ICallable<IQArray<Result>, Int64>>(typeof(global::Microsoft.Quantum.Convert.ResultArrayAsInt));
+            this.Microsoft__Quantum__Measurement__MultiM = this.__Factory__.Get<ICallable<IQArray<Qubit>, IQArray<Result>>>(typeof(global::Microsoft.Quantum.Measurement.MultiM));
             this.ResetAll__ = this.__Factory__.Get<ICallable<IQArray<Qubit>, QVoid>>(typeof(global::Microsoft.Quantum.Intrinsic.ResetAll));
         }
 

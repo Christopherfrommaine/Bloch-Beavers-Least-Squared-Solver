@@ -345,7 +345,7 @@ namespace Least.Squares.Solver {
         
         let inputMatrixFormsDirectly = true;
 
-        let totalIterations = 1;
+        let totalIterations = 1000;
         mutable numIterationsTotal = 0;
         mutable outcomes = [];
         
@@ -368,78 +368,58 @@ namespace Least.Squares.Solver {
 
         //HHL Algorithm
         repeat {
-            set numIterationsTotal += 1;
-            mutable dontRepeatComputation = false;
-            mutable repitionCount = 0;
-            repeat {
-                
-                //State Prep
-                use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
-                use c = Qubit[2];
-                use ancilla = Qubit();
-                Message("\nOriginal b (|0>)");
-                DumpRegister((), b);
-                if not inputMatrixFormsDirectly {prepareStateB(data, b);}
-                else {PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));}
-                Message("\nPrepare b (|1>)");
-                DumpRegister((), b);
+            //State Prep
+            
+            use ancilla = Qubit();
+            use c = Qubit[2];
+            use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
+            
+            Message("\nOriginal b (|0>)");
+            DumpRegister((), b);
+            if not inputMatrixFormsDirectly {prepareStateB(data, b);}
+            else {PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));}
+            Message("\nPrepare b (|1>)");
+            DumpRegister((), b);
 
-                //QPE
-                //QPE State Prep
-                ApplyToEach(H, c);
+            //QPE
+            //QPE State Prep
+            ApplyToEach(H, c);
 
-                //QPE Application of U
-                for i in 0 .. Length(c) - 1 {
-                    Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
-                }
-
-                Message("After QPE");
-                DumpMachine();
-
-                Adjoint QFT(LittleEndianAsBigEndian(LittleEndian(c)));
-
-                Message("After QFT");
-                DumpMachine();
-
-                //QPE Controlled Rotation
-                ancillaRotations(c, ancilla);
-
-                Message("After Rotation");
-                DumpMachine();
-
-                //Ancilla Measurement
-                set dontRepeatComputation = M(ancilla) == One;
-                Message($"Ancilla measured to be " + (dontRepeatComputation ? "One. Continuing..." | "Zero Repeating..."));
-                set repitionCount += 1;
-
-                if dontRepeatComputation {
-                    //Continuing the Algorithm
-                    //QPE IQPE
-                    QFT(LittleEndianAsBigEndian(LittleEndian(c)));
-                    for i in 0 .. Length(c) - 1 {
-                        Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i)), b));
-                    }
-                    ApplyToEach(H, c);
-
-                    //Final Measureement
-                    DumpRegister((), b);
-                    DumpMachine();
-                    let output = MultiM(b);
-                    Message($"Output: {output}");
-                    set outcomes += [ResultArrayAsInt(output)];
-
-                    //Reset
-                    ResetAll(c);
-                }
-                else {
-                    ResetAll(b + c);
-                }
+            //QPE Application of U
+            for i in Length(c) - 1 .. -1 .. 0 {
+                Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
             }
-            until dontRepeatComputation; // or repitionCount > 10;
-            if repitionCount > 10 and false {
-                Message("Computation Failed: Ancilla never measured to be One");
-                fail "because why not";
+
+            Message("After QPE");
+            DumpMachine();
+
+            Adjoint QFTLE(LittleEndian(c));
+
+            Message("After QFT");
+            DumpMachine();
+
+            //QPE Controlled Rotation
+            ancillaRotations(c, ancilla);
+
+            Message("After Rotation");
+            DumpMachine();
+
+            //Continuing the Algorithm
+            //QPE IQPE
+            QFTLE(LittleEndian(c));
+            for i in Length(c) - 1 .. -1 .. 0 {
+                Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i)), b));
             }
+            ApplyToEach(H, c);
+
+            Message("Final State:");
+            DumpMachine();
+
+            if M(ancilla) == Zero {
+                set outcomes += [ResultArrayAsInt(MultiM(b))];
+                set numIterationsTotal += 1;
+            }
+            ResetAll([ancilla] + b + c);
         }
         until numIterationsTotal == totalIterations;
 
