@@ -277,17 +277,16 @@ namespace Least.Squares.Solver {
         //Inverse can be taken by setting t to be negativec
         //Powers can be taken by multiplying t
         
-        let iterations = 10;
+        let iterations = 20;
         mutable sum = [[Complex(0., 0.), Complex(0., 0.)], [Complex(0., 0.), Complex(0., 0.)]];
         for i in 0 .. iterations {
-            let magnitude = (t ^ IntAsDouble(i)) * ((i % 4) == 2 or (i % 4) == 3 ? -1. | 1.) * IntAsDouble(FactorialI(i));
-            let s = i % 2 == 1 ? Complex(0., magnitude) | Complex(magnitude, 0.);
+            let s = PowC(TimesC(Complex(t / IntAsDouble(FactorialI(i)), 0.), Complex(0., 1.)), Complex(IntAsDouble(i), 0.));
             mutable m = IdentityC(Length(A));
             for _ in 1 .. i {
                 set m = matMulC(m, doubleMatrixToComplex(A));
             }
             set m = scalarMatMulC(m, s);
-            Message($"Term {i}: {m}");
+            //Message($"Term {i}: {m}");
             set sum = AddMatC(sum, m);
         }
         Message($"Raw Matrix Form of U: {sum}");
