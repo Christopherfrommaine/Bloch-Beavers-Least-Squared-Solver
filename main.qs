@@ -273,7 +273,8 @@ namespace Least.Squares.Solver {
     }
 
 
-    operation U(A : Double[][], t : Double, qubits : Qubit[]) : Unit is Ctl {
+    operation U(A : Double[][], tTemp : Double, qubits : Qubit[]) : Unit is Ctl {
+        let t = -1. * tTemp;
         //Inverse can be taken by setting t to be negativec
         //Powers can be taken by multiplying t
         
@@ -289,23 +290,29 @@ namespace Least.Squares.Solver {
             set m = scalarMatMulC(m, s);
             set sum = AddMatC(sum, m);
         }
-        mutable normFactor = 0.;
-        for i in sum {
-            for j in i {
-                set normFactor += AbsComplex(j) ^ 2.;
+        if false {
+            mutable normFactor = 0.;
+            for i in sum {
+                for j in i {
+                    set normFactor += AbsComplex(j) ^ 2.;
+                }
             }
-        }
-        set normFactor = 1. / Sqrt(normFactor);
-        mutable o = [[Complex(0., 0.)], size=0];
-        for i in sum {
-            mutable temp = [Complex(0., 0.), size=0];
-            for j in i {
-                set temp += [TimesC(j, Complex(normFactor, 0.))];
+            set normFactor = 1. / Sqrt(normFactor);
+            mutable o = [[Complex(0., 0.)], size=0];
+            for i in sum {
+                mutable temp = [Complex(0., 0.), size=0];
+                for j in i {
+                    set temp += [TimesC(j, Complex(normFactor, 0.))];
+                }
+                set o += [temp];
             }
-            set o += [temp];
+            Message($"Normalized Matrix Form of U: {o} \nInputs | t: {t}, A: {A}");
+            ApplyUnitary(o, LittleEndian(qubits));
         }
-        Message($"Normalized Matrix Form of U: {o} \nInputs | t: {t}, A: {A}");
-        ApplyUnitary(o, LittleEndian(qubits));
+        else {
+            Message($"Matrix Form of U: {sum} \nInputs | t: {t}, A: {A}");
+            ApplyUnitary(sum, LittleEndian(qubits));
+        }
     }
 
 
@@ -338,7 +345,7 @@ namespace Least.Squares.Solver {
         
         let inputMatrixFormsDirectly = true;
 
-        let totalIterations = 1000;
+        let totalIterations = 100;
         mutable numIterationsTotal = 0;
         mutable outcomes = [];
         
@@ -413,12 +420,13 @@ namespace Least.Squares.Solver {
                     //QPE IQPE
                     QFT(LittleEndianAsBigEndian(LittleEndian(c)));
                     for i in 0 .. Length(c) - 1 {
-                        Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i + 1)), b));
+                        Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i)), b));
                     }
                     ApplyToEach(H, c);
 
                     //Final Measureement
                     DumpRegister((), b);
+                    DumpMachine();
                     let output = MultiM(b);
                     Message($"Output: {output}");
                     set outcomes += [ResultArrayAsInt(output)];
@@ -440,7 +448,7 @@ namespace Least.Squares.Solver {
 
         //Statistical Post-Processing
         mutable outcomesFinal = [];
-        mutable maxIndex = 0;
+        mutable maxIndex = 1;
         for i in outcomes {if i > maxIndex {set maxIndex = i;}}
 
         for i in 0 .. maxIndex {
@@ -457,10 +465,10 @@ namespace Least.Squares.Solver {
 
         Message($"Outcomes: {outcomes}");
         if outcomesFinal[0] < outcomesFinal[1] {
-            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {outcomesFinal[1] / outcomesFinal[0]}");
+            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])}");
         }
         else {
-            Message($"\n--------\nOutput: {outcomesFinal} | {outcomesFinal[0] / outcomesFinal[1]} : 1");
+            Message($"\n--------\nOutput: {outcomesFinal} | {IntAsDouble(outcomesFinal[0]) / IntAsDouble(outcomesFinal[1])} : 1");
         }
     }
 }
