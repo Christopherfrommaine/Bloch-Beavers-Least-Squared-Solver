@@ -279,17 +279,16 @@ namespace Least.Squares.Solver {
         
         let iterations = 20;
         mutable sum = [[Complex(0., 0.), Complex(0., 0.)], [Complex(0., 0.), Complex(0., 0.)]];
-        for i in 0 .. iterations {
-            let s = PowC(TimesC(Complex(t / IntAsDouble(FactorialI(i)), 0.), Complex(0., 1.)), Complex(IntAsDouble(i), 0.));
+        for n in 0 .. iterations {
+            //let s = PowC(TimesC(Complex(t / IntAsDouble(FactorialI(n)), 0.), Complex(0., 1.)), Complex(IntAsDouble(n), 0.));
+            let s = TimesC(PowC(Complex(0., -1. * t), Complex(IntAsDouble(n), 0.)),  Complex(1. / IntAsDouble(FactorialI(n)), 0.)); //Computes (-i * t) ^ n  / n!
             mutable m = IdentityC(Length(A));
-            for _ in 1 .. i {
+            for _ in 1 .. n {
                 set m = matMulC(m, doubleMatrixToComplex(A));
             }
             set m = scalarMatMulC(m, s);
-            //Message($"Term {i}: {m}");
             set sum = AddMatC(sum, m);
         }
-        Message($"Raw Matrix Form of U: {sum}");
         mutable normFactor = 0.;
         for i in sum {
             for j in i {
