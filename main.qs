@@ -306,19 +306,36 @@ namespace Least.Squares.Solver {
                 }
                 set o += [temp];
             }
-            Message($"Normalized Matrix Form of U: {o} \nInputs | t: {t}, A: {A}");
+            //Message($"Normalized Matrix Form of U: {o} \nInputs | t: {t}, A: {A}");
             ApplyUnitary(o, LittleEndian(qubits));
         }
         else {
-            Message($"Matrix Form of U: {sum} \nInputs | t: {t}, A: {A}");
+            //Message($"Matrix Form of U: {sum} \nInputs | t: {t}, A: {A}");
             ApplyUnitary(sum, LittleEndian(qubits));
         }
     }
 
 
-    operation ancillaRotations(c : Qubit[], a : Qubit) : Unit {
-        for i in 0 .. Length(c) - 1 {
-            Controlled Ry([c[i]], (2. * ArcCos(1. / (IntAsDouble(i) + 1.)), a));
+    operation ancillaRotations(c : Qubit[], a : Qubit, C : Double) : Unit {
+        let N = 2 ^ Length(c);
+
+        for i in 1 .. N - 1 {
+
+            //let desiredAmplitude = (1. / IntAsDouble(i));
+            let desiredAmplitude = (1. / IntAsDouble(i)) ^ 2.;
+            let theta = 2. * ArcSin(Sqrt(desiredAmplitude));
+
+            Message($"Inputs: {C}, {i}");
+            Message($"Theta: {theta} \n^^ Expected Thetas: 3.1416, 1.0472");
+            Message($"Desired Amplitude: {desiredAmplitude}");
+            Message($"Amplitude: {0.5 * ((-1. * Cos(theta)) + 1.)}");
+
+            let binRepr = IntAsBoolArray(i, Length(c));
+            
+            ApplyPauliFromBitString(PauliX, false, binRepr, c); //Zero controls
+            Controlled Ry(c, (theta, a));
+            ApplyPauliFromBitString(PauliX, false, binRepr, c); //Reset Zero controls
+
         }
     }
 
@@ -326,6 +343,23 @@ namespace Least.Squares.Solver {
 
     @EntryPoint()
     operation MainOp() : Unit {
+        if false {
+            using q1 = Qubit() {
+                using q = Qubit[2] {
+                    ApplyToEach(H, q);
+                    ancillaRotations(q, q1, 1.);
+                    DumpMachine();
+                    ResetAll(q + [q1]);
+                }
+            }
+        }
+        using q = Qubit[2] {
+            Message("hi");
+            X(q[0]);
+            Adjoint QFT(BigEndian(q));
+            DumpMachine();
+            ResetAll(q);
+        }
         
         Message("Starting HHL Algorithm \n\n\n\n\n\n\n\n\n\n\n\n\n");
 
@@ -345,8 +379,9 @@ namespace Least.Squares.Solver {
         
         let inputMatrixFormsDirectly = true;
 
-        let totalIterations = 1000;
+        let totalIterations = 100;
         mutable numIterationsTotal = 0;
+        mutable numIterationsSkipped = 0;
         mutable outcomes = [];
         
         let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
@@ -364,14 +399,20 @@ namespace Least.Squares.Solver {
         let A = inputMatrixFormsDirectly ? directInput_A | convertAtoHermitian(Aoriginal);
         displayMatrixD(A, "A");
 
-        let t = 3. * PI() / 4.;
+        let manuallyInputEigenvalueStuff = true;
+        
+        let t = manuallyInputEigenvalueStuff ? 3. * PI() / 4. | 100.;
+        let maxEigenvalueBound = 2.;
+        let cRegisterSize = manuallyInputEigenvalueStuff ? 2 | Ceiling(Lg(t * maxEigenvalueBound));
+        //let C = 2. * PI() / (IntAsDouble(2 ^ cRegisterSize) * t); //Smallest possible eigenvalue
+        let C = 1.;
 
         //HHL Algorithm
         repeat {
             //State Prep
             
             use ancilla = Qubit();
-            use c = Qubit[2];
+            use c = Qubit[cRegisterSize];
             use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
             
             Message("\nOriginal b (|0>)");
@@ -390,35 +431,42 @@ namespace Least.Squares.Solver {
                 Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
             }
 
-            Message("After QPE");
+            Message("After QPE (|phi_3>)");
             DumpMachine();
 
-            Adjoint QFTLE(LittleEndian(c));
+            Adjoint QFT(BigEndian(c));
+            
 
-            Message("After QFT");
+            Message("After QFT (|phi_4>)");
             DumpMachine();
 
             //QPE Controlled Rotation
-            ancillaRotations(c, ancilla);
+            ancillaRotations(c, ancilla, C);
 
-            Message("After Rotation");
+            Message("After Rotation (|phi_5>)");
             DumpMachine();
 
             //Continuing the Algorithm
             //QPE IQPE
-            QFTLE(LittleEndian(c));
+            QFT(BigEndian(c));
             for i in Length(c) - 1 .. -1 .. 0 {
                 Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i)), b));
             }
             ApplyToEach(H, c);
 
-            Message("Final State:");
+            Message("Iter Final State (|phi_9>)");
             DumpMachine();
 
-            if M(ancilla) == Zero {
+            if numIterationsTotal == totalIterations - 1 {
+                Message("Final State");
+                DumpMachine();
+            }
+
+            if M(ancilla) == One {
                 set outcomes += [ResultArrayAsInt(MultiM(b))];
                 set numIterationsTotal += 1;
             }
+            else {set numIterationsSkipped += 1;}
             ResetAll([ancilla] + b + c);
         }
         until numIterationsTotal == totalIterations;
@@ -439,7 +487,7 @@ namespace Least.Squares.Solver {
         }
 
 
-
+        Message($"Computed {numIterationsTotal} times | Skipped because of ancilla {numIterationsSkipped} times | Iterated a total of {numIterationsTotal + numIterationsSkipped} times");
         Message($"Outcomes: {outcomes}");
         if outcomesFinal[0] < outcomesFinal[1] {
             Message($"\n--------\nOutput: {outcomesFinal} | 1 : {IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])}");
