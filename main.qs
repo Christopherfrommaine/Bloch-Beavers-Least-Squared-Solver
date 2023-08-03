@@ -42,20 +42,16 @@ namespace Least.Squares.Solver {
     
     
 
-    operation prepareStateB (data : Double[][], register : Qubit[]) : Unit {
-        //This prepares the vector |b> as the amplitudes of the |1> state of an ancillary qubit
-        //when entangled with the index qubit. ie: b[5] = |5>0.7|1>
-        //This is the method used in the 25 page paper.
-
+    function createVectorB (equations : Double[][]) : Double[] {
         mutable sumOfSquares = 0.;
-        for i in data {set sumOfSquares += i[1] ^ 2.;} //Find largest element of b
+        for i in equations {set sumOfSquares += i[Length(equations[0]) - 1];} //Find largest element of b
         let normFactor = Sqrt(sumOfSquares);
 
-        mutable b = [];
-        for i in data {set b += [i[1] / normFactor];} //Gets the b vecotor normalized w/ all entries < 1
-        Message($"{b}");
-
-        PrepareArbitraryStateD(b, LittleEndian(register));
+        mutable o = [0., size=0];
+        for i in equations {
+            set o += [i[Length(equations[0]) - 1] / normFactor];
+        }
+        return o;
     }
 
 
@@ -230,18 +226,17 @@ namespace Least.Squares.Solver {
         return o;
     }
 
-
-
-    function prepareOriginalMatrixA (data : Double[][], width : Int) : Double[][] {
-        mutable A = [[0.], size=0];
-        for column in 0 .. width - 1 {
+    
+    function prepareMatrixA (equations : Double[][]) : Double[][] {
+        mutable o = [[0.], size=0];
+        for i in 0 .. Length(equations) - 1 {
             mutable temp = [0., size=0];
-            for row in data {
-                set temp += [row[0] ^ IntAsDouble(width - column - 1)];
+            for j in 0 .. Length(equations[i]) - 2 {
+                set temp += [equations[i][j]];
             }
-            set A += [temp];
+            set o += [temp];
         }
-        return A;
+        return o;
     }
 
 
@@ -290,79 +285,20 @@ namespace Least.Squares.Solver {
             set m = scalarMatMulC(m, s);
             set sum = AddMatC(sum, m);
         }
-        if false {
-            mutable normFactor = 0.;
-            for i in sum {
-                for j in i {
-                    set normFactor += AbsComplex(j) ^ 2.;
-                }
-            }
-            set normFactor = 1. / Sqrt(normFactor);
-            mutable o = [[Complex(0., 0.)], size=0];
-            for i in sum {
-                mutable temp = [Complex(0., 0.), size=0];
-                for j in i {
-                    set temp += [TimesC(j, Complex(normFactor, 0.))];
-                }
-                set o += [temp];
-            }
-            //Message($"Normalized Matrix Form of U: {o} \nInputs | t: {t}, A: {A}");
-            ApplyUnitary(o, LittleEndian(qubits));
-        }
-        else {
-            //Message($"Matrix Form of U: {sum} \nInputs | t: {t}, A: {A}");
-            ApplyUnitary(sum, LittleEndian(qubits));
-        }
+        //Message($"Matrix Form of U: {sum} \nInputs | t: {t}, A: {A}");
+        ApplyUnitary(sum, LittleEndian(qubits));
     }
 
 
-    operation ancillaRotations(c : Qubit[], a : Qubit, C : Double) : Unit {
-        let N = 2 ^ Length(c);
-
-        for i in 1 .. N - 1 {
-
-            //let desiredAmplitude = (1. / IntAsDouble(i));
-            let desiredAmplitude = (1. / IntAsDouble(i)) ^ 2.;
-            let theta = 2. * ArcSin(Sqrt(desiredAmplitude));
-
-            Message($"Inputs: {C}, {i}");
-            Message($"Theta: {theta} \n^^ Expected Thetas: 3.1416, 1.0472");
-            Message($"Desired Amplitude: {desiredAmplitude}");
-            Message($"Amplitude: {0.5 * ((-1. * Cos(theta)) + 1.)}");
-
-            let binRepr = IntAsBoolArray(i, Length(c));
-            
-            ApplyPauliFromBitString(PauliX, false, binRepr, c); //Zero controls
-            Controlled Ry(c, (theta, a));
-            ApplyPauliFromBitString(PauliX, false, binRepr, c); //Reset Zero controls
-
+    operation ancillaRotations(c : Qubit[], a : Qubit) : Unit {
+        for i in 0 .. Length(c) - 1 {
+            Controlled Ry([c[i]], (2. * ArcCos(1. / (IntAsDouble(i) + 1.)), a));
         }
     }
 
-    
 
     @EntryPoint()
     operation MainOp() : Unit {
-        if false {
-            using q1 = Qubit() {
-                using q = Qubit[2] {
-                    ApplyToEach(H, q);
-                    ancillaRotations(q, q1, 1.);
-                    DumpMachine();
-                    ResetAll(q + [q1]);
-                }
-            }
-        }
-        using q = Qubit[2] {
-            Message("hi");
-            X(q[0]);
-            Adjoint QFT(BigEndian(q));
-            DumpMachine();
-            ResetAll(q);
-        }
-        
-        Message("Starting HHL Algorithm \n\n\n\n\n\n\n\n\n\n\n\n\n");
-
         //Major Steps:
             //State Prep
             //QPE
@@ -375,52 +311,72 @@ namespace Least.Squares.Solver {
             //Measure b register to find x
 
 
+        //Configuration
+        let totalIterations = 10000;
+        let autoGenerateMatrices = false;
+        let autoGenerateEigenvalues = false;
+        let autoGenerateLoggingAmount = true; //0 is Only Output, 1 is Progress, 2 is Messages, 3 is Final DumpMachine, 4 is Everywhere DumpMachine
+
         //Inputs
-        
-        let inputMatrixFormsDirectly = true;
+        let linearEquations = [[1., -1./3., 0.], [-1./3., 1., 1.]]; //In the form [a, b, c] such that ax + by = c
 
-        let totalIterations = 100;
-        mutable numIterationsTotal = 0;
-        mutable numIterationsSkipped = 0;
-        mutable outcomes = [];
-        
-        let widthA = 8;  //Only specific numbers work. It is a little weird. Ask me (Christopher) to explain it if this causes problems later
-        let data = [[0., 1.], [2., 4.], [3., 5.], [4., 10.], [4., 4.], [7., 3.], [7., 2.], [5., 1.]];
-
-        //State Preperation (Need to define variables outside of scope of repeat loop)
-        let Aoriginal = prepareOriginalMatrixA(data, widthA);
-        if not inputMatrixFormsDirectly {displayMatrixD(Aoriginal, "Original A");}
-        
-
+        //Direct Input
+        let directInput_l = 1;
         let directInput_A = [[1., -1. / 3.], [-1. / 3., 1.]];
         let directInput_bInput = [0., 1.];
-        let directInput_bLength = 1;
-        
-        let A = inputMatrixFormsDirectly ? directInput_A | convertAtoHermitian(Aoriginal);
-        displayMatrixD(A, "A");
+        let directInput_cLength = 2;
+        let directInput_t = 3. * PI() / 4.;
+        let directInput_C = 1.;
 
-        let manuallyInputEigenvalueStuff = true;
+
+        // Program -------
+        let A = autoGenerateMatrices ? prepareMatrixA(linearEquations) | directInput_A;
+        mutable l = 2;
+        mutable t = 0.;
+        mutable C = 0.;
+        mutable cLength = 0;
+        if autoGenerateEigenvalues {
+            fail "Not Implemented.";
+        }
+        else {
+            set t = directInput_t;
+            set C = directInput_C;
+            set cLength = directInput_cLength;
+        }
+        if autoGenerateLoggingAmount {
+            if totalIterations == 1 {
+                if autoGenerateEigenvalues {
+                    set l = 2;
+                }
+                else {
+                    set l = 3;
+                }
+            }
+            elif totalIterations <= 100 {set l = 2;}
+            else {set l = 1;}
+        }
+        else {
+            set l = directInput_l;
+        }
         
-        let t = manuallyInputEigenvalueStuff ? 3. * PI() / 4. | 100.;
-        let maxEigenvalueBound = 2.;
-        let cRegisterSize = manuallyInputEigenvalueStuff ? 2 | Ceiling(Lg(t * maxEigenvalueBound));
-        //let C = 2. * PI() / (IntAsDouble(2 ^ cRegisterSize) * t); //Smallest possible eigenvalue
-        let C = 1.;
+        if l >= 2 {displayMatrixD(A, "A");}
+        if l >= 2 {displayMatrixD([createVectorB(linearEquations)], "b");}
 
         //HHL Algorithm
+        mutable numIterationsTotal = 0;
+        mutable outcomes = [];
+        mutable previousCompletionPercent = -1;
         repeat {
             //State Prep
-            
             use ancilla = Qubit();
-            use c = Qubit[cRegisterSize];
-            use b = Qubit[inputMatrixFormsDirectly ? directInput_bLength | Ceiling(Lg(IntAsDouble(Length(data)))) + 1];
+            use c = Qubit[cLength];
+            use b = Qubit[Ceiling(Lg(IntAsDouble(Length(linearEquations))))];
             
-            Message("\nOriginal b (|0>)");
-            DumpRegister((), b);
-            if not inputMatrixFormsDirectly {prepareStateB(data, b);}
-            else {PrepareArbitraryStateD(directInput_bInput, LittleEndian(b));}
-            Message("\nPrepare b (|1>)");
-            DumpRegister((), b);
+            if l >= 2 {Message("\nOriginal b (|0>)");}
+            if l >= 4 {DumpRegister((), b);}
+            PrepareArbitraryStateD(autoGenerateMatrices ? createVectorB(linearEquations) | directInput_bInput, LittleEndian(b));
+            if l >= 2 {Message($"\nPrepare b (|1>): {createVectorB(linearEquations)}");}
+            if l >= 4 {DumpRegister((), b);}
 
             //QPE
             //QPE State Prep
@@ -431,43 +387,52 @@ namespace Least.Squares.Solver {
                 Controlled U([c[i]], (A, t * IntAsDouble(2 ^ (i)), b));
             }
 
-            Message("After QPE (|phi_3>)");
-            DumpMachine();
+            if l >= 2 {Message("After QPE");}
+            if l >= 4 {DumpMachine();}
 
-            Adjoint QFT(BigEndian(c));
-            
+            Adjoint QFTLE(LittleEndian(c));
 
-            Message("After QFT (|phi_4>)");
-            DumpMachine();
+            if l >= 2 {Message("After QFT");}
+            if l >= 4 {DumpMachine();}
 
             //QPE Controlled Rotation
-            ancillaRotations(c, ancilla, C);
+            ancillaRotations(c, ancilla);
 
-            Message("After Rotation (|phi_5>)");
-            DumpMachine();
+            if l >= 2 {Message("After Rotation");}
+            if l >= 4 {DumpMachine();}
 
             //Continuing the Algorithm
             //QPE IQPE
-            QFT(BigEndian(c));
+            QFTLE(LittleEndian(c));
             for i in Length(c) - 1 .. -1 .. 0 {
                 Controlled U([c[i]], (A, -1. * t * IntAsDouble(2 ^ (i)), b));
             }
             ApplyToEach(H, c);
 
-            Message("Iter Final State (|phi_9>)");
-            DumpMachine();
+            if l >= 2 {Message("Final State:");}
+            if l >= 3 {DumpMachine();}
 
-            if numIterationsTotal == totalIterations - 1 {
-                Message("Final State");
-                DumpMachine();
-            }
-
-            if M(ancilla) == One {
+            if M(ancilla) == Zero {
                 set outcomes += [ResultArrayAsInt(MultiM(b))];
                 set numIterationsTotal += 1;
             }
-            else {set numIterationsSkipped += 1;}
             ResetAll([ancilla] + b + c);
+            if l >= 1 {
+                if numIterationsTotal % Ceiling(IntAsDouble(totalIterations) / 100.) == 0 {
+                    mutable progress = "";
+                    mutable spaces = "";
+                    let percentComplete = (100 * numIterationsTotal) / (totalIterations);
+                    if percentComplete <= 9 {set spaces += " ";}
+                    if percentComplete <= 99 {set spaces += " ";}
+                    for j in 0 .. 20 {
+                        set progress +=  100 * j / 20 <= (100 * numIterationsTotal) / (totalIterations) ? "#" | "-";
+                    }
+                    if percentComplete != previousCompletionPercent {
+                        Message($"{(100 * numIterationsTotal) / (totalIterations)}%{spaces} | {progress} |");
+                    }
+                    set previousCompletionPercent = percentComplete;
+                }
+            }
         }
         until numIterationsTotal == totalIterations;
 
@@ -487,13 +452,13 @@ namespace Least.Squares.Solver {
         }
 
 
-        Message($"Computed {numIterationsTotal} times | Skipped because of ancilla {numIterationsSkipped} times | Iterated a total of {numIterationsTotal + numIterationsSkipped} times");
-        Message($"Outcomes: {outcomes}");
+
+        if l >= 2 {Message($"Outcomes: {outcomes}");}
         if outcomesFinal[0] < outcomesFinal[1] {
-            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])}");
+            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])}\n--------\n");
         }
         else {
-            Message($"\n--------\nOutput: {outcomesFinal} | {IntAsDouble(outcomesFinal[0]) / IntAsDouble(outcomesFinal[1])} : 1");
+            Message($"\n--------\nOutput: {outcomesFinal} | {IntAsDouble(outcomesFinal[0]) / IntAsDouble(outcomesFinal[1])} : 1\n--------\n");
         }
     }
 }
