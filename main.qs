@@ -312,7 +312,7 @@ namespace Least.Squares.Solver {
 
 
         //Configuration
-        let totalIterations = 10;
+        let totalIterations = 10000;
         let autoGenerateMatrices = false;
         let autoGenerateEigenvalues = false;
         let autoGenerateLoggingAmount = true; //0 is Only Output, 1 is Progress, 2 is Messages, 3 is Final DumpMachine, 4 is Everywhere DumpMachine
