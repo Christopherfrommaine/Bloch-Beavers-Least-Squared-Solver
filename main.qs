@@ -312,12 +312,10 @@ namespace Least.Squares.Solver {
 
 
         //Configuration
-        let totalIterations = 10000;
+        let totalIterations = 10;
         let autoGenerateMatrices = false;
         let autoGenerateEigenvalues = false;
         let autoGenerateLoggingAmount = true; //0 is Only Output, 1 is Progress, 2 is Messages, 3 is Final DumpMachine, 4 is Everywhere DumpMachine
-
-        //Inputs
         let linearEquations = [[1., -1./3., 0.], [-1./3., 1., 1.]]; //In the form [a, b, c] such that ax + by = c
 
         //Direct Input
@@ -455,10 +453,46 @@ namespace Least.Squares.Solver {
 
         if l >= 2 {Message($"Outcomes: {outcomes}");}
         if outcomesFinal[0] < outcomesFinal[1] {
-            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])}\n--------\n");
+            Message($"\n--------\nOutput: {outcomesFinal} | 1 : {IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])}\n");
         }
         else {
-            Message($"\n--------\nOutput: {outcomesFinal} | {IntAsDouble(outcomesFinal[0]) / IntAsDouble(outcomesFinal[1])} : 1\n--------\n");
+            Message($"\n--------\nOutput: {outcomesFinal} | {IntAsDouble(outcomesFinal[0]) / IntAsDouble(outcomesFinal[1])} : 1\n");
         }
+
+
+        //Find solutions given the ratio
+        let ratio = outcomesFinal[0] < outcomesFinal[1] ? [1, Round(Sqrt(IntAsDouble(outcomesFinal[1]) / IntAsDouble(outcomesFinal[0])))] | [Round(Sqrt(IntAsDouble(outcomesFinal[0]) / IntAsDouble(outcomesFinal[1]))), 1];
+		let correctVectorB = autoGenerateMatrices ? createVectorB(linearEquations) | directInput_bInput;
+        mutable bestD = 0;
+        mutable bestN = 0;
+        mutable bestError = 999999999.;
+        for denominator in 1 .. 10 {
+            for numerator in 0 .. 10 {
+                mutable solution = [0., size=0];
+                for i in ratio {set solution += [IntAsDouble(numerator * i) / IntAsDouble(denominator)];}
+
+                //Find A * solution
+                mutable outputVector = [0., size=0];
+                for i in 0 .. Length(solution) - 1 {
+                    mutable sum = 0.;
+                    for j in 0 .. Length(A) - 1 {
+                        set sum += A[j][i] * solution[j];
+                    }
+                    set outputVector += [sum];
+                }
+
+                mutable error = 0.;
+                for i in 0 .. Length(solution) - 1 {
+                    set error += AbsD(outputVector[i] - correctVectorB[i]);
+                }
+
+                if error < bestError {
+                    set bestError = error;
+                    set bestD = denominator;
+                    set bestN = numerator;
+                }
+            }
+        }
+        Message($"Solution: ({bestN}/{bestD}) * {ratio}\n--------\n");
     }
 }
